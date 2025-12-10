@@ -603,7 +603,7 @@ const AshmeetChatInterface = ({ onClose }) => {
         {/* Input Form (FOOTER) */}
         <form
           onSubmit={handleAshmeetSend}
-          className="sticky bottom-0 z-50 p-1 mx-3 bg-transparent  backdrop-blur-none transition duration-300 pb-4 md:mb-0 md:pb-1"
+          className="sticky bottom-0 z-50 p-1 mx-3 bg-transparent  backdrop-blur-none transition duration-300 pb-10 md:mb-0 md:pb-1"
         >
           {/* Input Container */}
           <div
