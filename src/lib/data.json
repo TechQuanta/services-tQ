@@ -1,0 +1,99 @@
+{
+  "pages": {
+    "aboutPage": {
+      "sections": {
+        "howWeWork": {
+          "title": "How We Work",
+          "subtitle": "We help startups build high-quality MVPs faster with powerful strategy, modern tech, and efficient development workflows.",
+          "magicBentoConfig": {
+            "textAutoHide": true,
+            "enableStars": true,
+            "enableSpotlight": true,
+            "enableBorderGlow": true,
+            "enableTilt": true,
+            "enableMagnetism": true,
+            "clickEffect": true,
+            "spotlightRadius": 300,
+            "particleCount": 12,
+            "glowColor": "1, 247, 247"
+          }
+        },
+        "coverage": {
+          "title": "Worldwide Service Coverage",
+          "subtitle": "Our team collaborates across continents—delivering global solutions with local precision.",
+          "worldMapDots": [
+            {
+              "start": { "lat": 64.2008, "lng": -149.4937 },
+              "end": { "lat": 34.0522, "lng": -118.2437 },
+              "note": "Alaska to Los Angeles"
+            },
+            {
+              "start": { "lat": 64.2008, "lng": -149.4937 },
+              "end": { "lat": -15.7975, "lng": -47.8919 },
+              "note": "Alaska to Brasília, Brazil"
+            },
+            {
+              "start": { "lat": -15.7975, "lng": -47.8919 },
+              "end": { "lat": 38.7223, "lng": -9.1393 },
+              "note": "Brasília to Lisbon"
+            },
+            {
+              "start": { "lat": 51.5074, "lng": -0.1278 },
+              "end": { "lat": 28.6139, "lng": 77.209 },
+              "note": "London to New Delhi"
+            },
+            {
+              "start": { "lat": 28.6139, "lng": 77.209 },
+              "end": { "lat": 43.1332, "lng": 131.9113 },
+              "note": "New Delhi to Vladivostok"
+            },
+            {
+              "start": { "lat": 28.6139, "lng": 77.209 },
+              "end": { "lat": -1.2921, "lng": 36.8219 },
+              "note": "New Delhi to Nairobi"
+            }
+          ]
+        }
+      }
+    },
+    "pricingPage": {
+      "header": {
+        "tag": "Simple Pricing",
+        "title": "Choose Your Plan",
+        "subtitle": "Clear options to bring your app idea to life, with everything included to launch successfully"
+      },
+      "tabs": {
+        "new": "New App Development",
+        "existing": "Existing App Maintenance"
+      },
+      "cta": {
+        "buttonText": "Start Your Project →",
+        "contactUs": {
+          "prefix": "Need a custom solution?",
+          "linkText": "Contact us",
+          "suffix": "for personalized pricing."
+        }
+      },
+      "budgetPlan": {
+        "name": "Budget Landing Page",
+        "price": "$99",
+        "subtitle": "Launch a single, high-converting landing page to validate your idea.",
+        "features": [
+          "Custom single-page design",
+          "Fast 3-Day Delivery",
+          "Responsive on all devices",
+          "Basic SEO optimization"
+        ],
+        "buttonText": "Get Started →"
+      },
+      "apiConfig": {
+        "url": "https://script.google.com/macros/s/AKfycbxLy8KeggC_5N5JrsJo0SGiwqkswL3sSb2UkCpC9z8kCg0MB_6DrgjE80g3U1g7KpxQvg/exec",
+        "initialState": {
+          "newAppPricing": [],
+          "existingAppPricing": []
+        },
+        "defaultError": "Failed to load pricing plans. Please check the network and API status."
+      }
+    }
+  }
+}

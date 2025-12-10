@@ -1,3 +1,6 @@
+"use client"; // Keep this if this is a client component in Next.js
+import React, { useState } from 'react'; // Import useState for chat toggle logic
+import { Bot } from 'lucide-react'; // Import Bot icon
 import { Spotlight } from "../../src/components/ui/spotlight";
 import { DotPattern } from "../../src/components/ui/dot-pattern";
 import Navbar from "./components/ui/Navbar";
@@ -7,7 +10,14 @@ import ServiceSection from "./components/section/ServiceSection";
 import TestimonialsSection from "./components/section/TestimonialSection";
 import Footer from "./components/ui/Footer";
 
+// --- IMPORTANT: Import your Chatbot component here ---
+// Adjust the path below to where your Chatbot component is located
+import Chatbot from "@/app/components/ui/AiAssist";
+// --------------------------------------------------------
+
 export default function Page() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
   return (
     <>
       <Navbar />
@@ -30,18 +40,17 @@ export default function Page() {
             Ship AI-Driven Web Apps Fast <br />
             From
             <span 
-  className="inline-block px-4 py-1 text-white md:px-6 md:py-2 font-bold ml-2 rounded-md"
-  style={{ 
-    backgroundColor: '#01f7f7',
-    // Removed the 'border' style to achieve a cleaner circular look
-    boxShadow: '0 0 20px rgba(1, 247, 247, 0.4), inset 0 0 10px rgba(1, 247, 247, 0.2)',
-  }}
->
+              className="inline-block px-4 py-1 text-white md:px-6 md:py-2 font-bold ml-2 rounded-md"
+              style={{ 
+                backgroundColor: '#01f7f7',
+                boxShadow: '0 0 20px rgba(1, 247, 247, 0.4), inset 0 0 10px rgba(1, 247, 247, 0.2)',
+              }}
+            >
               <span style={{ display: 'inline-block', animation: 'slideInRight 0.6s ease-out 0s' }}>Idea</span>
               <span style={{ display: 'inline-block', marginLeft: '0.4em', animation: 'slideInRight 0.6s ease-out 0.2s backwards' }}>to</span>
               <span style={{ display: 'inline-block', marginLeft: '0.4em', animation: 'slideInRight 0.6s ease-out 0.4s backwards' }}>MVP</span>
               <span style={{ display: 'inline-block', marginLeft: '0.4em', animation: 'slideInRight 0.6s ease-out 0.6s backwards' }}>in</span>
-           <ContainerTextFlip words={["Months", "Weeks", "Days"]} />   
+              <ContainerTextFlip words={["Months", "Weeks", "Days"]} />   
             </span>
           </h1>
 
@@ -54,25 +63,27 @@ export default function Page() {
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
             {/* Free Chat Button */}
             <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-neutral-900 px-8 py-3 font-semibold text-white transition-all hover:bg-neutral-800 active:scale-95">
-              <span>💬</span>
-              Free Chat
+              <img src="/google-meet.svg" alt="Portfolio Icon" className="h-5 w-5"/>
+              Google Meet
             </button>
 
             {/* Google Meet Button */}
             <button className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-neutral-900 px-8 py-3 font-semibold text-neutral-900 transition-all hover:bg-neutral-50 active:scale-95">
-              <span>📹</span>
-              Google Meet
+              <img src="/portfolio.png" alt="Portfolio Icon" className="h-5 w-5"/>
+              Portfolio
             </button>
+            
           </div>
         </div>
 
-        {/* Animation Keyframes */}
-       
+        {/* Animation Keyframes (UNCHANGED) */}
+        
       </main>
       <AboutSection/>
       <ServiceSection/>
-      <TestimonialsSection/>
+      <TestimonialsSection isPreview={true}/>
       <Footer/>
-    </>
-  );
+      <Chatbot />
+    </>
+  );
 }
