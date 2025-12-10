@@ -1,65 +1,78 @@
-import Image from "next/image";
+import { Spotlight } from "../../src/components/ui/spotlight";
+import { DotPattern } from "../../src/components/ui/dot-pattern";
+import Navbar from "./components/ui/Navbar";
+import { ContainerTextFlip } from "@/components/ui/container-text-flip";
+import AboutSection from "./components/section/AboutSection";
+import ServiceSection from "./components/section/ServiceSection";
+import TestimonialsSection from "./components/section/TestimonialSection";
+import Footer from "./components/ui/Footer";
 
-export default function Home() {
+export default function Page() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      <Navbar />
+      <main className="relative min-h-screen w-full bg-white">
+        {/* Dot Pattern Background */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <DotPattern className="h-full w-full opacity-40" />
+        </div>
+
+        {/* Spotlight Effect */}
+        <Spotlight
+          className="-top-40 left-1/2 -translate-x-1/2 md:-top-20"
+          fill="white"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
+
+        {/* Hero Content */}
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-4 py-20">
+          {/* Main Heading */}
+          <h1 className="text-center text-4xl font-bold text-neutral-900 md:text-6xl lg:text-7xl">
+            Ship AI-Driven Web Apps Fast <br />
+            From
+            <span 
+  className="inline-block px-4 py-1 text-white md:px-6 md:py-2 font-bold ml-2 rounded-md"
+  style={{ 
+    backgroundColor: '#01f7f7',
+    // Removed the 'border' style to achieve a cleaner circular look
+    boxShadow: '0 0 20px rgba(1, 247, 247, 0.4), inset 0 0 10px rgba(1, 247, 247, 0.2)',
+  }}
+>
+              <span style={{ display: 'inline-block', animation: 'slideInRight 0.6s ease-out 0s' }}>Idea</span>
+              <span style={{ display: 'inline-block', marginLeft: '0.4em', animation: 'slideInRight 0.6s ease-out 0.2s backwards' }}>to</span>
+              <span style={{ display: 'inline-block', marginLeft: '0.4em', animation: 'slideInRight 0.6s ease-out 0.4s backwards' }}>MVP</span>
+              <span style={{ display: 'inline-block', marginLeft: '0.4em', animation: 'slideInRight 0.6s ease-out 0.6s backwards' }}>in</span>
+           <ContainerTextFlip words={["Months", "Weeks", "Days"]} />   
+            </span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          {/* Subtext */}
+          <p className="mx-auto mt-6 max-w-2xl text-center text-lg text-neutral-600 md:text-xl">
+            Build production-ready MVPs with cutting-edge AI technology. We handle the complexity, you focus on growth.
           </p>
+
+          {/* Buttons */}
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
+            {/* Free Chat Button */}
+            <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-neutral-900 px-8 py-3 font-semibold text-white transition-all hover:bg-neutral-800 active:scale-95">
+              <span>💬</span>
+              Free Chat
+            </button>
+
+            {/* Google Meet Button */}
+            <button className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-neutral-900 px-8 py-3 font-semibold text-neutral-900 transition-all hover:bg-neutral-50 active:scale-95">
+              <span>📹</span>
+              Google Meet
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        {/* Animation Keyframes */}
+       
       </main>
-    </div>
+      <AboutSection/>
+      <ServiceSection/>
+      <TestimonialsSection/>
+      <Footer/>
+    </>
   );
 }
