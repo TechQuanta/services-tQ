@@ -15,7 +15,7 @@ const ALL_TESTIMONIALS = [
         type: 'text',
         name: "Pradeep Telnar",
         title: "Founder, Skill Labs (Exited: $1M)",
-        quote: "DreamLaunch Studios took complete ownership at every stage — incredibly reliable, fast, and always delivering high-quality work.",
+        quote: " took complete ownership at every stage — incredibly reliable, fast, and always delivering high-quality work.",
         image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit-crop",
     },
     {
@@ -86,14 +86,19 @@ function TestimonialVideoCard({ video, className = "" }) {
 function TestimonialTextCard({ testimonial, className = "" }) {
     return (
         <div
-            className={`rounded-2xl bg-white p-6 md:p-8 flex flex-col justify-between 
-                        border border-gray-100 shadow-xl transition-shadow duration-300 
-                        hover:shadow-2xl hover:border-black/10 h-full ${className}`}
+            className={`
+                rounded-xl 
+                p-6 md:p-8 
+                flex flex-col justify-between 
+                border border-dashed border-gray-400 
+                bg-white
+                shadow-sm 
+                h-full 
+                ${className}
+            `}
         >
-            {/* Added relative parent to ensure absolute positioning is confined */}
-            <div className="relative pt-4"> 
-                {/* Moved icon slightly inward to prevent overflow */}
-                <Quote size={24} className="text-gray-200 absolute -top-1 -left-2 sm:-left-3" /> 
+            <div className="relative pt-4">
+                <Quote size={24} className="text-gray-200 absolute -top-1 -left-2" />
                 <p className="text-neutral-900 text-base sm:text-lg md:text-xl font-medium leading-snug tracking-tight mb-6">
                     {testimonial.quote}
                 </p>
@@ -102,19 +107,18 @@ function TestimonialTextCard({ testimonial, className = "" }) {
             <div className="flex items-center gap-4 mt-auto pt-4 border-t border-gray-200">
                 <img
                     src={testimonial.image}
-                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-[#01f7f7] shadow-md"
+                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-[#01f7f7]"
                     alt={testimonial.name + ' profile picture'}
                 />
                 <div>
-                    <h4 className="font-bold text-neutral-900 text-md">
-                        {testimonial.name}
-                    </h4>
+                    <h4 className="font-bold text-neutral-900 text-md">{testimonial.name}</h4>
                     <p className="text-black/70 text-sm">{testimonial.title}</p>
                 </div>
             </div>
         </div>
     );
 }
+
 
 /* ----------------------------------------------------
  * MAIN TESTIMONIALS SECTION (Simplified Grid Logic)
@@ -157,7 +161,7 @@ export default function TestimonialsSection({ isPreview = false }) {
     }
 
     return (
-        <div className="bg-gray-50 py-24 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white py-24 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
 
                 {/* Heading */}

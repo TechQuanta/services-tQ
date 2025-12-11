@@ -1,20 +1,19 @@
 "use client";
+
 import React from "react";
 import WorldMap from "../../../components/ui/world-map";
 import MagicBento from "../../../components/ui/MagicBento";
-
-// Import the centralized configuration
 import appConfig from '@/lib/data.json'; 
 
-// Destructure the necessary data
 const { howWeWork, coverage } = appConfig.pages.aboutPage.sections;
 
 function AboutSection() {
   return (
-    <div className="w-full flex flex-col items-center justify-center gap-20 py-20">
+    <section className="w-full flex flex-col items-center justify-center text-center gap-20 py-20 px-4">
 
       {/* SECTION 1 — How We Work */}
-      <div className="w-full max-w-6xl flex flex-col items-center text-center px-4 gap-6">
+      <div className="w-full max-w-6xl mx-auto flex flex-col items-center text-center gap-6">
+        
         <h1 className="text-4xl font-bold text-black">
           {howWeWork.title}
         </h1>
@@ -23,32 +22,43 @@ function AboutSection() {
           {howWeWork.subtitle}
         </p>
 
-        {/* Spread the configuration object directly into props for brevity */}
-        <MagicBento
-          {...howWeWork.magicBentoConfig}
-        />
+        <MagicBento {...howWeWork.magicBentoConfig} />
       </div>
 
       {/* SECTION 2 — Worldwide Service Coverage */}
-      <div className="w-full max-w-6xl flex flex-col items-center text-center px-4 gap-6">
-        <h1 className="text-4xl font-bold text-black">
-          {coverage.title}
-        </h1>
+     {/* SECTION 2 — Worldwide Service Coverage */}
+<div className="w-full max-w-6xl mx-auto flex flex-col items-center text-center px-4 gap-6">
 
-        <p className="text-lg text-black max-w-xl opacity-80">
-          {coverage.subtitle}
-        </p>
+  <h1 className="text-4xl font-bold text-black">
+    {coverage.title}
+  </h1>
 
-        {/* Map the worldMapDots array to the format expected by the WorldMap component */}
-        <WorldMap
-          dots={coverage.worldMapDots.map(dot => ({
-            start: dot.start,
-            end: dot.end,
-          }))}
-        />
-      </div>
+  <p className="text-lg text-black max-w-xl opacity-80">
+    {coverage.subtitle}
+  </p>
 
-    </div>
+  {/* World Map Styled Container */}
+  <div className="
+      w-full max-w-6xl 
+      border border-gray-200 
+      rounded-2xl 
+      p-6 
+      flex items-center justify-center 
+      bg-white
+    "
+  >
+    <WorldMap
+      dots={coverage.worldMapDots.map(dot => ({
+        start: dot.start,
+        end: dot.end,
+      }))}
+      lineColor="#01f7f7"
+    />
+  </div>
+</div>
+
+
+    </section>
   );
 }
 

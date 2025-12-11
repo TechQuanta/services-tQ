@@ -20,7 +20,7 @@
         },
         "coverage": {
           "title": "Worldwide Service Coverage",
-          "subtitle": "Our team collaborates across continents—delivering global solutions with local precision.",
+         "subtitle": "We collaborate with clients across multiple time zones, delivering high-quality AI-driven web applications with a fully remote, globally distributed team.",
           "worldMapDots": [
             {
               "start": { "lat": 64.2008, "lng": -149.4937 },

@@ -40,7 +40,7 @@ export default function ServiceSection() {
             if (data.newAppPricing && data.existingAppPricing) {
                 setPricingData(data);
             } else {
-                 throw new Error("API returned an unexpected data structure.");
+                throw new Error("API returned an unexpected data structure.");
             }
 
         } catch (err) {
@@ -50,7 +50,7 @@ export default function ServiceSection() {
         } finally {
             setIsLoading(false);
         }
-    }, [apiConfig.defaultError]); // Added dependency
+    }, []);
 
     // Load data on component mount
     useEffect(() => {
@@ -59,13 +59,17 @@ export default function ServiceSection() {
 
     const { newAppPricing, existingAppPricing } = pricingData;
     
-    const pricingList = activeTab === 'new' ? newAppPricing : existingAppPricing;
+    // Combine budget plan with pricing list if on 'new' tab
+    let pricingList = activeTab === 'new' ? newAppPricing : existingAppPricing;
+    const shouldShowBudgetPlan = activeTab === 'new';
+    if (shouldShowBudgetPlan && BUDGET_PLAN) {
+        pricingList = [...pricingList, BUDGET_PLAN];
+    }
 
-    // --- Conditional Rendering for Loading and Error States (UNCHANGED) ---
-
+    // Conditional Rendering for Loading and Error States
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-white text-black">
+            <div className="w-full min-h-screen flex items-center justify-center bg-white text-black">
                 <p className="text-xl">Loading pricing plans...</p>
             </div>
         );
@@ -73,37 +77,45 @@ export default function ServiceSection() {
 
     if (error) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-white text-black">
+            <div className="w-full min-h-screen flex items-center justify-center bg-white text-black">
                 <p className="text-xl text-red-500">{error}</p>
             </div>
         );
     }
 
-    // --- Render Component with Dynamic Data (USING JSON) ---
+    // Calculate grid columns based on number of cards
+    const getGridCols = () => {
+        if (pricingList.length <= 2) return 'grid-cols-1 md:grid-cols-2';
+        return 'grid-cols-1 md:grid-cols-3';
+    };
 
+    // Render Component with Dynamic Data
     return (
-        <div className="min-h-screen bg-white text-black py-12 px-4">
-            <div className="max-w-7xl mx-auto">
+        <section className="w-full bg-white text-black py-16 px-4">
+            <div className="max-w-7xl mx-auto flex flex-col items-center justify-center">
                 
                 {/* Header */}
-                <div className="text-center mb-12">
-                    <div className="mb-4">
-                        <span className="inline-block px-4 py-2 rounded-full text-sm font-semibold" style={{ color: 'rgb(1, 247, 247)' }}>
+                <div className="text-center mb-12 w-full">
+                    <div className="mb-4 flex justify-center">
+                        <span 
+                            className="inline-block px-4 py-2 rounded-full text-sm font-semibold"
+                            style={{ color: 'rgb(1, 247, 247)', backgroundColor: 'rgba(1, 247, 247, 0.1)' }}
+                        >
                             {header.tag}
                         </span>
                     </div>
-                    <h1 className="text-5xl font-bold mb-4">{header.title}</h1>
-                    <p className="text-gray-400 text-lg">{header.subtitle}</p>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4">{header.title}</h2>
+                    <p className="text-gray-500 text-lg max-w-2xl mx-auto">{header.subtitle}</p>
                 </div>
 
                 {/* Toggle Buttons */}
-                <div className="flex gap-4 justify-center mb-12">
+                <div className="flex gap-4 justify-center mb-14">
                     <button
                         onClick={() => setActiveTab('new')}
-                        className={`px-8 py-3 rounded-lg font-semibold transition-all ${
+                        className={`px-8 py-3 rounded-lg font-semibold transition-all duration-300 ${
                             activeTab === 'new'
-                                ? 'text-black font-bold'
-                                : 'text-black border border-gray-300'
+                                ? 'text-black font-bold shadow-lg'
+                                : 'text-gray-700 border border-gray-300 hover:border-gray-400'
                         }`}
                         style={{
                             backgroundColor: activeTab === 'new' ? 'rgb(1, 247, 247)' : 'transparent'
@@ -113,10 +125,10 @@ export default function ServiceSection() {
                     </button>
                     <button
                         onClick={() => setActiveTab('existing')}
-                        className={`px-8 py-3 rounded-lg font-semibold transition-all ${
+                        className={`px-8 py-3 rounded-lg font-semibold transition-all duration-300 ${
                             activeTab === 'existing'
-                                ? 'text-black font-bold'
-                                : 'text-black border border-gray-300'
+                                ? 'text-black font-bold shadow-lg'
+                                : 'text-gray-700 border border-gray-300 hover:border-gray-400'
                         }`}
                         style={{
                             backgroundColor: activeTab === 'existing' ? 'rgb(1, 247, 247)' : 'transparent'
@@ -126,120 +138,90 @@ export default function ServiceSection() {
                     </button>
                 </div>
 
-                {/* Pricing Cards */}
-                <div className={`grid gap-8 ${activeTab === 'new' ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2'} max-w-6xl mx-auto mb-12`}>
-                    {pricingList.map((plan, index) => (
-                        <div
-                            key={index}
-                            className={`rounded-2xl p-8 relative transition-all ${
-                                plan.recommended
-                                    ? 'md:scale-105 border-2'
-                                    : 'border border-gray-700'
-                            }`}
-                            style={{
-                                borderColor: 'rgb(1, 247, 247)',
-                                backgroundColor: plan.recommended ? 'rgb(255, 255, 255)' : 'transparent'
-                            }}
-                        >
-                            {/* Recommended Badge */}
-                            {plan.recommended && (
-                                <div
-                                    className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-sm font-bold"
-                                    style={{ backgroundColor: 'rgb(1, 247, 247)', color: 'black' }}
-                                >
-                                    Recommended
+                {/* Pricing Cards Grid */}
+                <div className={`grid gap-8 w-full max-w-7xl ${getGridCols()}`}>
+                    {pricingList.map((plan, index) => {
+                        const isRecommended = plan.recommended;
+                        
+                        return (
+                            <div
+                                key={index}
+                                className={`
+                                    rounded-2xl p-8 relative transition-all duration-300
+                                    flex flex-col h-full
+                                    ${isRecommended 
+                                        ? 'md:col-span-1 md:row-span-1 border-2 shadow-xl hover:shadow-2xl scale-100 md:scale-105' 
+                                        : 'border border-gray-200 shadow-md hover:shadow-lg'
+                                    }
+                                    hover:border-opacity-80
+                                `}
+                                style={{
+                                    borderColor: 'rgb(1, 247, 247)',
+                                    backgroundColor: isRecommended ? 'rgba(1, 247, 247, 0.05)' : 'rgb(255, 255, 255)'
+                                }}
+                            >
+                                {/* Recommended Badge */}
+                                {isRecommended && (
+                                    <div
+                                        className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide"
+                                        style={{ backgroundColor: 'rgb(1, 247, 247)', color: 'black' }}
+                                    >
+                                        Most Popular
+                                    </div>
+                                )}
+
+                                {/* Plan Header */}
+                                <div className="mb-6 flex-shrink-0">
+                                    <h3 className="text-2xl font-bold text-black mb-2">{plan.name}</h3>
+                                    <p className="text-gray-500 text-sm">{plan.subtitle}</p>
                                 </div>
-                            )}
 
-                            {/* Plan Header */}
-                            <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                            <p className="text-gray-400 mb-6">{plan.subtitle}</p>
+                                {/* Price Section */}
+                                <div className="mb-8 flex-shrink-0">
+                                    <div className="flex items-baseline">
+                                        <span className="text-5xl font-bold text-black">{plan.price}</span>
+                                        {!plan.price.includes('/month') && plan.price !== 'Custom' && (
+                                            <span className="text-gray-500 ml-2 text-sm">USD</span>
+                                        )}
+                                    </div>
+                                </div>
 
-                            {/* Price */}
-                            <div className="mb-8">
-                                <span className="text-5xl font-bold">{plan.price}</span>
-                                <span className="text-gray-400 ml-2">
-                                    {plan.price.includes('/month') ? '' : 'USD'}
-                                </span>
+                                {/* Features List */}
+                                <ul className="space-y-3.5 mb-8 flex-grow">
+                                    {(plan.features || []).map((feature, featureIndex) => (
+                                        <li key={featureIndex} className="flex items-start gap-3">
+                                            <Check
+                                                size={20}
+                                                className="mt-0.5 flex-shrink-0 min-w-fit"
+                                                style={{ color: 'rgb(1, 247, 247)' }}
+                                            />
+                                            <span className="text-gray-700 text-sm leading-relaxed">{feature}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                {/* CTA Button */}
+                                <button
+                                    className={`
+                                        w-full py-3 px-4 rounded-lg font-semibold transition-all duration-300
+                                        flex-shrink-0
+                                        ${isRecommended 
+                                            ? 'text-white hover:opacity-90' 
+                                            : 'text-white hover:opacity-90'
+                                        }
+                                    `}
+                                    style={{ 
+                                        backgroundColor: isRecommended ? 'rgb(1, 247, 247)' : 'rgba(0, 0, 0, 0.9)',
+                                        color: isRecommended ? 'black' : 'white'
+                                    }}
+                                >
+                                    {plan.buttonText || cta.buttonText}
+                                </button>
                             </div>
-
-                            {/* Features */}
-                            <ul className="space-y-4 mb-8">
-                                {(plan.features || []).map((feature, featureIndex) => (
-                                    <li key={featureIndex} className="flex items-start gap-3">
-                                        <Check
-                                            size={20}
-                                            className="mt-1 flex-shrink-0"
-                                            style={{ color: 'rgb(1, 247, 247)' }}
-                                        />
-                                        <span className="text-gray-700">{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            {/* CTA Button */}
-                            <button
-                                className="w-full py-3 rounded-lg font-semibold transition-all text-white font-bold"
-                                style={{ backgroundColor: 'rgba(0, 0, 0, 1)' }}
-                            >
-                                {cta.buttonText}
-                            </button>
-                        </div>
-                    ))}
-                </div>
-                
-                {/* Budget Landing Page Plan Bar */}
-                {activeTab === 'new' && (
-                    <div 
-                        className="max-w-6xl mx-auto mb-12 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between shadow-lg"
-                        style={{
-                            borderColor: 'rgb(1, 247, 247)',
-                            border: '2px solid',
-                            backgroundColor: 'rgb(255, 255, 255)',
-                        }}
-                    >
-                        <div className="md:w-1/3 text-center md:text-left mb-4 md:mb-0">
-                            <h3 className="text-2xl font-bold mb-1">{BUDGET_PLAN.name}</h3>
-                            <p className="text-gray-500 text-sm">{BUDGET_PLAN.subtitle}</p>
-                        </div>
-
-                        {/* Features List */}
-                        <div className="md:w-2/5 flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2 mb-4 md:mb-0">
-                            {BUDGET_PLAN.features.map((feature, index) => (
-                                <span key={index} className="flex items-center text-sm text-gray-700">
-                                    <Check size={14} className="mr-1 flex-shrink-0" style={{ color: 'rgb(1, 247, 247)' }} />
-                                    {feature}
-                                </span>
-                            ))}
-                        </div>
-
-                        {/* Price and CTA */}
-                        <div className="flex flex-col items-center md:flex-row md:items-center md:w-1/4">
-                            <div className="text-3xl font-bold mb-2 md:mb-0 md:mr-4">
-                                {BUDGET_PLAN.price}
-                                <span className="text-base text-gray-400 ml-1">USD</span>
-                            </div>
-                            <button
-                                className="w-full md:w-auto px-6 py-2 rounded-lg font-semibold transition-all text-white font-bold whitespace-nowrap"
-                                style={{ backgroundColor: 'rgba(0, 0, 0, 1)' }}
-                            >
-                                {BUDGET_PLAN.buttonText}
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* Footer */}
-                <div className="text-center">
-                    <p className="text-gray-400">
-                        {cta.contactUs.prefix}{' '}
-                        <span style={{ color: 'rgb(1, 247, 247)' }} className="font-semibold cursor-pointer hover:opacity-80">
-                            {cta.contactUs.linkText}
-                        </span>
-                        {' '}{cta.contactUs.suffix}
-                    </p>
+                        );
+                    })}
                 </div>
             </div>
-        </div>
+        </section>
     );
 }

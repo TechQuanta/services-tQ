@@ -15,7 +15,7 @@ import remarkGfm from "remark-gfm";
 const ASHMEET_CHAT_API_URL = `https://chat-with-me-seven-sandy.vercel.app/api/chat`;
 const ASHMEET_ASSISTANT_IMAGE_URL = "/avatar.png";
 const ASHMEET_USER_IMAGE_URL = "https://placehold.co/40x40/60a5fa/ffffff?text=U";
-const ASHMEET_ASSISTANT_NAME = "Singh AI";
+const ASHMEET_ASSISTANT_NAME = "TQ assistant";
 const ASHMEET_MAX_INPUT_WORDS = 500;
 const TYPING_INDICATOR_MESSAGE_ID = "typing-indicator"; // Fixed ID for typing indicator
 const ANIMATION_INTERVAL = 5000; // 5 seconds for SplitText re-animation
@@ -43,7 +43,7 @@ const generateAshmeetId = () =>
 const ashmeetInitialMessages = [
   {
     id: generateAshmeetId(),
-    text: `Hello, I'm **${ASHMEET_ASSISTANT_NAME}**. I'm an advanced AI designed to assist you with deep insights. Please **ask me about my work, professional background, finance, or current market trends.**`,
+    text: `Hello, I'm **${ASHMEET_ASSISTANT_NAME}**. I'm an advanced AI designed to assist you with deep insights. Please **ask me about our work, professional background,pricing,plans, current market trends.**`,
     isBot: true,
     timestamp: new Date(),
   },
