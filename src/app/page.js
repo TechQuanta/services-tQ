@@ -10,6 +10,7 @@ import ServiceSection from "./components/section/ServiceSection";
 import TestimonialsSection from "./components/section/TestimonialSection";
 import Footer from "./components/ui/Footer";
 import Chatbot from "@/app/components/ui/AiAssist";
+import TechStack from "./components/section/TechStack";
 
 import { DotPattern } from "../../src/components/ui/dot-pattern";
 import { Spotlight } from "../../src/components/ui/spotlight";
@@ -69,6 +70,7 @@ export default function Page() {
 
             {/* Other sections — now inside the shifting wrapper */}
             <div className="w-full flex flex-col items-center justify-center text-center px-4">
+              <TechStack/>
               <AboutSection />
               <ServiceSection />
               <TestimonialsSection isPreview={true} />
