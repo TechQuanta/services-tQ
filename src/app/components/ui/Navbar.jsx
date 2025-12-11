@@ -1,7 +1,9 @@
 "use client";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useContext } from "react";
 // Import ArrowLeft for the back option
 import { Menu, X, ArrowRight, ArrowLeft } from 'lucide-react'; 
+import MenuSidebar from "@/components/ui/MenuSidebar";
+import { ValuesContext } from "@/context/ValuesContext";
 
 // Function to load Cal.com embed JS (provided by Cal.com documentation)
 const getCalApi = (config) => {
@@ -32,7 +34,8 @@ const DESKTOP_DRAWER_WIDTH_CLASS = 'w-96'; // 24rem
 const DESKTOP_DRAWER_WIDTH = 384; // 384px
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false); // Right-side Nav Menu
+const { openSidebar, setOpenSidebar } = useContext(ValuesContext);
+// Right-side Nav Menu
   const [isChatOpen, setIsChatOpen] = useState(false); // Left-side Intro Chat Drawer
 
   // Load Cal.com Embed API with 'theme: light' when component mounts or isChatOpen changes
@@ -106,7 +109,7 @@ export default function Navbar() {
           
           {/* LOGO */}
           <div className="text-2xl font-bold text-gray-900 tracking-wider">
-
+           <img src="/tech.jpg" alt="Logo" className="h-10 w-auto" />
           </div>
 
           {/* DESKTOP LINKS */}
@@ -132,7 +135,12 @@ export default function Navbar() {
             onClick={toggleMenu}
             aria-label="Open menu"
           >
-            <Menu className="w-6 h-6" />
+<div className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+    <MenuSidebar />
+</div>
+
+
+            
           </button>
         </div>
       </nav>
@@ -201,16 +209,17 @@ export default function Navbar() {
       {/* 2. RIGHT SIDEBAR (MOBILE NAVIGATION MENU) - UNCHANGED LOGIC (Overlay) */}
       {/* ======================================================================== */}
       
-      {open && (
+      {openSidebar && (
         <div
           className="fixed top-0 left-0 h-full w-full bg-black/50 backdrop-blur-sm z-[100] transition-opacity duration-300"
-          onClick={closeMenu}
-          aria-hidden={!open}
+          onClick={() => setOpenSidebar(false)}
+
+          aria-hidden={!openSidebar}
         >
           {/* Sidebar Content */}
           <div
             className={`fixed top-0 right-0 h-full w-full max-w-sm bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
-              open ? "translate-x-0" : "translate-x-full"
+              openSidebar ? "translate-x-0" : "translate-x-full"
             }`}
             onClick={(e) => e.stopPropagation()} 
           >
@@ -221,7 +230,8 @@ export default function Navbar() {
                 <span className="text-2xl font-bold text-gray-900">Navigation</span>
                 <X
                   className="text-gray-700 w-7 h-7 cursor-pointer hover:text-red-600 transition-colors"
-                  onClick={closeMenu}
+                onClick={() => setOpenSidebar(false)}
+
                   aria-label="Close menu"
                 />
               </div>
@@ -232,7 +242,9 @@ export default function Navbar() {
                     key={link.name} 
                     name={link.name} 
                     href={link.href} 
-                    onClick={closeMenu}
+                 onClick={() => setOpenSidebar(false)}
+
+
                   />
                 ))}
               </div>
@@ -240,7 +252,7 @@ export default function Navbar() {
               {/* Mobile CTA Button (triggers left drawer) */}
               <div className="pt-8 border-t border-gray-100 mt-auto">
                 <button
-                  onClick={() => { closeMenu(); openChat({ preventDefault: () => {} }); }} 
+                  onClick={() => { () => setOpenSidebar(!openSidebar); openChat({ preventDefault: () => {} }); }} 
                   className="w-full text-center px-4 py-3 bg-blue-600 text-white rounded-lg flex items-center justify-center gap-2 shadow-md hover:bg-blue-700 transition-colors duration-300 font-semibold text-lg"
                 >
                   <img src="/google-meet.svg" alt="Google Meet icon" className="h-4 w-4" />

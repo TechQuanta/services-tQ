@@ -12,6 +12,7 @@ export default function Footer() {
 
           {/* Brand Section */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
+            <img src="/tech.jpg" alt="TechQuanta Logo" className="h-12 w-auto rounded-md" />
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
               TechQuanta<span className="text-[#01f7f7]">_Services</span>
             </h2>
@@ -57,18 +58,7 @@ export default function Footer() {
               </li>
             </ul>
 
-            {/* Newsletter Subscription */}
-            <div className="w-full flex justify-center md:justify-start">
-              <div className="flex items-center bg-gray-900 border border-gray-800 rounded-lg overflow-hidden w-full max-w-sm hover:border-[#01f7f7] transition-colors duration-300">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="bg-transparent px-4 py-3 text-sm text-gray-300 placeholder-gray-600 w-full outline-none"
-                />
-                <button className="bg-[#01f7f7] px-4 py-3 hover:bg-[#00e5e5] transition-colors duration-300 text-black font-semibold flex-shrink-0">
-                  <ArrowRight size={18} />
-                </button>
-              </div>
+            <div>
             </div>
           </div>
 

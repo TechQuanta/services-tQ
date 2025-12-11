@@ -170,7 +170,7 @@ export default function TestimonialsSection({ isPreview = false }) {
                         What Our Clients Say About Us
                     </h2>
                     <p className="text-neutral-600 text-xl max-w-3xl mx-auto">
-                        Real founders. Real products. Real impact. Hear from teams who trusted DreamLaunch to build their vision.
+                        Real founders. Real products. Real impact. Hear from teams who trusted techQuanta_Services to build their vision.
                     </p>
                 </div>
 

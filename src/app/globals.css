@@ -3,6 +3,23 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* globals.css */
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-poppins);
+}
+
+/* Body text */
+body, p, li, span {
+  font-family: var(--font-roboto);
+}
+
+/* Accent / badges / buttons */
+.badge, .highlight, .btn-accent {
+  font-family: var(--font-raleway);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

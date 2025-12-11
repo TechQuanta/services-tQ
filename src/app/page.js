@@ -12,6 +12,7 @@ import Chatbot from "@/app/components/ui/AiAssist";
 import { DotPattern } from "../../src/components/ui/dot-pattern";
 import { Spotlight } from "../../src/components/ui/spotlight";
 import Hero from "./components/ui/Hero";
+import TechStackSection from "./components/section/TechStack";
 
 export default function Page() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -49,6 +50,7 @@ export default function Page() {
       {/* Other sections — now automatically centered because each gets mx-auto + text-center */}
       <div className="w-full flex flex-col items-center justify-center text-center px-4">
         <AboutSection />
+        <TechStackSection/>
         <ServiceSection />
         <TestimonialsSection isPreview={true} />
         <Footer />

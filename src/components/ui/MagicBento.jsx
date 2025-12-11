@@ -10,41 +10,43 @@ const MOBILE_BREAKPOINT = 768;
 const cardData = [
   {
     color: '#060010',
-    title: 'Analytics',
-    description: 'Track user behavior',
-    label: 'Insights'
+    title: 'Discovery & Strategy',
+    description: 'Understand goals, brand, audience, and build strategic direction.',
+    label: 'Stage 1'
   },
   {
     color: '#060010',
-    title: 'Dashboard',
-    description: 'Centralized data view',
-    label: 'Overview'
+    title: 'Planning & Architecture',
+    description: 'Sitemap, user flows, technical planning, and content structure.',
+    label: 'Stage 2'
   },
   {
     color: '#060010',
-    title: 'Collaboration',
-    description: 'Work together seamlessly',
-    label: 'Teamwork'
+    title: 'UI/UX Design',
+    description: 'High-fidelity design, wireframes, components, and branding.',
+    label: 'Stage 3'
   },
   {
     color: '#060010',
-    title: 'Automation',
-    description: 'Streamline workflows',
-    label: 'Efficiency'
+    title: 'Development',
+    description: 'Frontend, backend, CMS setup, animations, integrations.',
+    label: 'Stage 4'
   },
   {
     color: '#060010',
-    title: 'Integration',
-    description: 'Connect favorite tools',
-    label: 'Connectivity'
+    title: 'Launch',
+    description: 'Testing, optimization, hosting setup, and final deployment.',
+    label: 'Stage 5'
   },
   {
     color: '#060010',
-    title: 'Security',
-    description: 'Enterprise-grade protection',
-    label: 'Protection'
+    title: 'Ongoing Optimization',
+    description: 'Speed improvements, SEO, analytics, A/B tests, and updates.',
+    label: 'Stage 6'
   }
 ];
+
+
 
 const createParticleElement = (x, y, color = DEFAULT_GLOW_COLOR) => {
   const el = document.createElement('div');
