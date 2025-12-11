@@ -20,7 +20,7 @@
         },
         "coverage": {
           "title": "Worldwide Service Coverage",
-         "subtitle": "We collaborate with clients across multiple time zones, delivering high-quality AI-driven web applications with a fully remote, globally distributed team.",
+          "subtitle": "We collaborate with clients across multiple time zones, delivering high-quality AI-driven web applications with a fully remote, globally distributed team.",
           "worldMapDots": [
             {
               "start": { "lat": 64.2008, "lng": -149.4937 },
@@ -92,7 +92,16 @@
           "newAppPricing": [],
           "existingAppPricing": []
         },
-        "defaultError": "Failed to load pricing plans. Please check the network and API status."
+        "defaultError": "Failed to load pricing plans. Please check the network and API status.",
+        
+        "exchangeRates": {
+          "USD": 1,      
+          "INR": 82.5,   
+          "EUR": 0.90,   
+          "GBP": 0.78,   
+          "CAD": 1.35,   
+          "AUD": 1.48
+        }
       }
     }
   }

@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} ${roboto.variable} ${raleway.variable} antialiased`}
       >
-        <SmoothCursor />
+        <SmoothCursor  className="z-[110] overflow-hidden"/>
         <ValuesProvider>
           {children}
         </ValuesProvider>

@@ -108,8 +108,8 @@ const { openSidebar, setOpenSidebar } = useContext(ValuesContext);
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
           
           {/* LOGO */}
-          <div className="text-2xl font-bold text-gray-900 tracking-wider">
-           <img src="/tech.jpg" alt="Logo" className="h-10 w-auto" />
+          <div className="text-2xl font-bold text-gray-900 tracking-wider pl-10">
+           <img src="/tech.jpg" alt="Logo" className="h-10 w-auto rounded-md" />
           </div>
 
           {/* DESKTOP LINKS */}
