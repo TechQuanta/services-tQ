@@ -1,16 +1,10 @@
+// meet.jsx (The Central Intro Chat Drawer)
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft } from 'lucide-react'; 
 
-// Define constants
-const DESKTOP_DRAWER_WIDTH_CLASS = 'w-96'; // 24rem
-const DESKTOP_DRAWER_WIDTH = 384; // 384px
-const DEFAULT_CAL_LINK_SLUG = "techquanta-ukwkct/30min"; // Default meeting for the general CTA
-const PROJECT_DISCUSSION_SLUG = "techquanta-ukwkct/project-discussion"; // New meeting type
-
-// Function to load Cal.com embed JS (same as before)
+// Function to load Cal.com embed JS (kept as is)
 const getCalApi = (config) => {
-    // ... (function body remains the same) ...
     if (typeof window !== "undefined") {
         if (window.Cal) return Promise.resolve(window.Cal);
 
@@ -29,73 +23,77 @@ const getCalApi = (config) => {
     return Promise.resolve(null);
 };
 
+// Define the fixed width for the desktop drawer
+const DESKTOP_DRAWER_WIDTH_CLASS = 'w-96'; // 24rem
+const DESKTOP_DRAWER_WIDTH = 384; // 384px
 
+// --- Centralized Meeting Slugs ---
+export const MEETING_SLUGS = {
+    MVP_DEV: 'techquanta-ukwkct/mvp-development',
+    FRONTEND_DEV: 'techquanta-ukwkct/frontend-development',
+    BUDGET_LANDING_PAGE: 'techquanta-ukwkct/budget-landing-page',
+    PROJECT_DISCUSSION: 'techquanta-ukwkct/15min',
+    QUICK_INTRO: 'techquanta-ukwkct/30min', 
+    FULL_CYCLE_APP_DEV: 'techquanta-ukwkct/full-cycle-app-dev', 
+};
+
+/**
+ * The IntroChatDrawer component acts as the centralized state manager.
+ * It uses the Render Prop pattern to expose control functions to its children.
+ */
 export default function IntroChatDrawer({ children }) {
     const [isChatOpen, setIsChatOpen] = useState(false);
-    const [calLinkType, setCalLinkType] = useState(DEFAULT_CAL_LINK_SLUG); 
+    const [calLinkType, setCalLinkType] = useState(MEETING_SLUGS.QUICK_INTRO); // Default
 
-    // Handlers (remain the same)
-    const openChat = useCallback((type, e) => {
-        if (e && typeof e.preventDefault === 'function') {
-            e.preventDefault();
-        }
-        const newType = type || DEFAULT_CAL_LINK_SLUG;
-        setCalLinkType(newType); 
+    // Function to close the drawer
+    const closeChat = useCallback(() => {
+        setIsChatOpen(false);
+    }, []);
+
+    // Function to open the drawer and set the specific meeting link
+    const openChat = useCallback((slug) => {
+        setCalLinkType(slug);
         setIsChatOpen(true);
     }, []);
-    
-    const closeChat = useCallback(() => setIsChatOpen(false), []);
 
-    // Use dynamic calLinkType to construct the specific path/link for cal.com
-    const calPath = calLinkType.split('/').pop();
-
-
-    // Load Cal.com Embed API (remains the same)
+    // Effect to load the Cal.com embed script and re-render the iframe
     useEffect(() => {
         if (isChatOpen && calLinkType) {
             (async function () {
-                const cal = await getCalApi({ "namespace": calPath }); 
+                const cal = await getCalApi({ "namespace": "default" });
                 if (cal) {
                     cal("ui", { "theme": "light", "hideEventTypeDetails": false, "layout": "month_view" });
                 }
             })();
         }
-    }, [isChatOpen, calLinkType, calPath]); 
+    }, [isChatOpen, calLinkType]);
 
-    // Propagate the state and control functions to children (remains the same)
-    const childrenWithProps = children({ 
-        isChatOpen, 
-        openChat, 
-        closeChat, 
-        DESKTOP_DRAWER_WIDTH,
-        MEETING_SLUGS: {
-            DEFAULT: DEFAULT_CAL_LINK_SLUG,
-            PROJECT_DISCUSSION: PROJECT_DISCUSSION_SLUG
-        }
-    });
-
+    // Construct the dynamic iframe source URL
+    const iframeSrc = `https://cal.com/${calLinkType}?embed=true&layout=month_view&theme=light`;
 
     return (
         <>
-            {childrenWithProps}
+            {/* 1. RENDER PROP: Pass ALL control props and constants to children */}
+            {children({ 
+                openChat, 
+                isChatOpen, 
+                closeChat, // Added for completeness
+                DESKTOP_DRAWER_WIDTH, // Added for completeness
+                MEETING_SLUGS // CRUCIAL: Pass the slugs inside the render prop
+            })}
             
-            {/* ========================================================== */}
-            {/* 1. LEFT SIDEBAR (INTRO CHAT DRAWER) */}
-            {/* ========================================================== */}
-            
-            {/* Overlay (Mobile ONLY) - Ensure it's below the cursor (z-index < 9999) */}
+            {/* 2. DRAWER OVERLAY (Mobile ONLY) */}
             <div
-                className={`fixed top-0 left-0 h-full w-full bg-black/50 backdrop-blur-sm transition-opacity duration-300 z-[9990] ${
+                className={`fixed top-0 left-0 h-full w-full bg-black/50 backdrop-blur-sm z-[110] transition-opacity duration-300 ${
                     isChatOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
                 } md:hidden`}
                 onClick={closeChat}
             />
 
-            {/* Drawer Content */}
+            {/* 3. DRAWER CONTENT */}
             <div
                 id="chat-drawer"
-                // FIX 2: Apply a high Z-Index, but still less than the cursor (9999)
-                className={`fixed top-0 left-0 h-full bg-white shadow-2xl z-[9991]
+                className={`fixed top-0 left-0 h-full bg-white shadow-2xl z-[110] 
                     transition-transform duration-500 ease-in-out
                     w-full md:${DESKTOP_DRAWER_WIDTH_CLASS} md:max-w-md`}
                 style={{
@@ -105,7 +103,7 @@ export default function IntroChatDrawer({ children }) {
             >
                 <div className="p-6 h-full flex flex-col">
                     
-                    {/* Header with Back/Close Button (remains the same) */}
+                    {/* Header with Back/Close Button */}
                     <div className="flex items-center pb-6 border-b border-gray-100 flex-shrink-0">
                         <button 
                             onClick={closeChat}
@@ -114,35 +112,28 @@ export default function IntroChatDrawer({ children }) {
                         >
                             <ArrowLeft className="w-6 h-6" />
                         </button>
-                        <span className="text-xl font-bold text-gray-900 ml-4">
-                            Book a 
-                            {calPath === '30min' ? ' Quick Intro' : ' Project Discussion'}
-                        </span>
+                        <span className="text-xl font-bold text-gray-900 ml-4">Book Meet</span>
                     </div>
 
                     {/* Cal.com Content Container */}
                     <div className="flex-grow pt-4 overflow-y-auto">
                         
-                        {/* IFRAME IMPLEMENTATION with DYNAMIC LINK */}
                         {isChatOpen && calLinkType && (
                             <iframe
-                                src={`https://cal.com/${calLinkType}?embed=true&layout=month_view&theme=light`}
-                                data-cal-namespace={calPath}
+                                key={calLinkType} 
+                                src={iframeSrc}
+                                data-cal-namespace="default"
                                 data-cal-link={calLinkType}
                                 data-cal-config='{"layout":"month_view","theme":"light"}'
-                                // It is crucial that the iframe content itself does not obscure the cursor.
-                                // While we can't style the iframe's content, the high z-index on SmoothCursor 
-                                // and the fixed z-index on the drawer should resolve the conflict.
                                 style={{ width: '100%', height: '100%', minHeight: '600px', border: 'none', overflow: 'hidden' }}
-                                key={calLinkType} 
-                                title={`Schedule a meeting: ${calPath}`}
+                                title="Schedule a Meeting"
                             ></iframe>
                         )}
                     </div>
                 </div>
             </div>
             
-            {/* GLOBAL CSS FOR CONTENT SHIFTING (remains the same) */}
+            {/* 4. GLOBAL CSS FOR CONTENT SHIFTING */}
             <style jsx global>{`
                 @media (min-width: 768px) {
                     :root {
@@ -151,8 +142,12 @@ export default function IntroChatDrawer({ children }) {
 
                     .page-wrapper-for-content-shift {
                         transition: margin-left 0.5s ease-in-out;
+                        /* Shift content to the right if the chat is open */
                         margin-left: ${isChatOpen ? 'var(--drawer-width)' : '0'}; 
+                        /* Adjust width to fit next to the open drawer */
                         width: ${isChatOpen ? 'calc(100% - var(--drawer-width))' : '100%'};
+                        min-height: 100vh;
+                        overflow-x: hidden;
                     }
                 }
             `}</style>

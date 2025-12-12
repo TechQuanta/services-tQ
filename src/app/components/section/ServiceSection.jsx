@@ -1,11 +1,16 @@
+// ServiceSection.jsx (Corrected to accept all required props)
+
 "use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import { Check } from 'lucide-react';
 
-// Import the centralized configuration
+// --- REMOVED LOCAL IMPORT OF MEETING_SLUGS ---
+// The slugs will now come directly from props passed by the parent IntroChatDrawer via Page.jsx
+// import { MEETING_SLUGS } from '@/app/components/ui/Meet'; 
+
 import appConfig from '../../../lib/data.json'; 
 
-// Destructure the necessary data, including the static exchangeRates
+// --- Configuration Data ---
 const { 
     header, 
     tabs, 
@@ -18,39 +23,26 @@ const API_URL = apiConfig.url;
 const INITIAL_PRICING_STATE = apiConfig.initialState;
 const STATIC_EXCHANGE_RATES = apiConfig.exchangeRates || {}; 
 
-// --- 1. UTILITY FUNCTIONS FOR DYNAMIC CURRENCY & LOCALIZATION ---
+// --- Utility Functions (Omitted for brevity, assumed unchanged and correct) ---
 
-/**
- * Maps the Timezone ID to the standard currency code for regions where locale detection fails.
- */
 const TIMEZONE_TO_CURRENCY_MAP = {
-    'Asia/Kolkata': 'INR', // Guaranteed fix for India
+    'Asia/Kolkata': 'INR', 
     'Europe/London': 'GBP',
     'Europe/Paris': 'EUR',
     'Asia/Tokyo': 'JPY',
-    // We rely on Intl.NumberFormat for the rest of the world.
 };
 
-/**
- * Step 1 (Primary): Detects the currency from the user's timezone.
- */
 const getCurrencyCodeFromTimezone = () => {
     try {
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const currencyCode = TIMEZONE_TO_CURRENCY_MAP[timeZone];
-        
         if (currencyCode) {
             return currencyCode.toUpperCase();
         }
-    } catch (e) {
-        // Silent failure
-    }
+    } catch (e) {}
     return null; 
 };
 
-/**
- * Step 2 (Fallback): Detects the currency from the user's browser locale settings.
- */
 const getPassiveLocalCurrencyCode = () => {
     try {
         const locale = navigator.language;
@@ -58,57 +50,33 @@ const getPassiveLocalCurrencyCode = () => {
             style: 'currency', 
             currency: 'USD'
         });
-        
         const currencyCode = formatter.resolvedOptions().currency;
-
         if (currencyCode) {
             return currencyCode.toUpperCase();
         }
-    } catch (e) {
-        // Silent failure
-    }
+    } catch (e) {}
     return 'USD';
 };
 
-/**
- * Primary function to resolve the user's currency using the best available method.
- */
 const resolveUserCurrency = async () => {
-    // 1. Try Timezone detection
     const timezoneCurrency = getCurrencyCodeFromTimezone();
     if (timezoneCurrency) {
         return timezoneCurrency;
     }
-
-    // 2. Fallback to passive locale detection
     let passiveCurrency = getPassiveLocalCurrencyCode();
     
-    // 3. Final override check for India/USD conflict (Guaranteed Fix)
     const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (currentTimeZone === 'Asia/Kolkata' && passiveCurrency === 'USD') {
         passiveCurrency = 'INR';
     }
-
     return passiveCurrency;
 };
 
-
-/**
- * Finds the appropriate exchange rate from the controlled static map.
- * This function handles the requirement:
- * - If currency is in STATIC_EXCHANGE_RATES (Top 10), use that rate.
- * - Otherwise (remaining currencies), return 1 (USD parity).
- */
 const getExchangeRate = (targetCurrency, rates) => {
     const rate = rates[targetCurrency.toUpperCase()];
-    // The core logic: return the rate if found, otherwise return 1 (USD).
     return rate || 1;
 };
 
-
-/**
- * Formats a price value after conversion.
- */
 const formatPrice = (basePriceUSD, exchangeRate, currencyCode) => {
     if (typeof basePriceUSD !== 'number' || basePriceUSD === 0) {
         return basePriceUSD;
@@ -125,9 +93,14 @@ const formatPrice = (basePriceUSD, exchangeRate, currencyCode) => {
 };
 
 
-// --- 2. MAIN COMPONENT ---
-
-export default function ServiceSection() {
+// --- The Main Component: ACCEPTS openChat AND MEETING_SLUGS prop ---
+export default function ServiceSection({ openChat, MEETING_SLUGS }) {
+    
+    // Safety check: ensure the required props are passed down
+    if (!openChat || !MEETING_SLUGS) {
+        // Now checks for both props
+        return <div className="p-20 text-center text-red-500">Service section failed to receive required props (openChat and MEETING_SLUGS).</div>;
+    }
     
     const [activeTab, setActiveTab] = useState('new');
     const [basePricingData, setBasePricingData] = useState(INITIAL_PRICING_STATE);
@@ -138,7 +111,7 @@ export default function ServiceSection() {
     const [exchangeRate, setExchangeRate] = useState(1); 
     const [conversionFailed, setConversionFailed] = useState(false); 
 
-    // 2a. Function to fetch the base data 
+    // Data Fetching Logic (UNCHANGED)
     const fetchPricingData = useCallback(async () => {
         setError(null);
         try {
@@ -162,7 +135,7 @@ export default function ServiceSection() {
         }
     }, []);
 
-    // 2b. Function to determine the user's rate
+    // Currency Context Logic (UNCHANGED)
     const setLocalPricingContext = useCallback(async () => {
         const userCurrency = await resolveUserCurrency();
         const rate = getExchangeRate(userCurrency, STATIC_EXCHANGE_RATES);
@@ -170,28 +143,24 @@ export default function ServiceSection() {
         setLocalCurrencyCode(userCurrency);
         setExchangeRate(rate);
 
-        // Check if a currency was detected but we don't have a specific rate for it (i.e., it defaults to USD)
-        // We only set this flag if the currency is NOT USD, AND the rate defaults to 1.
         const isRateDefined = STATIC_EXCHANGE_RATES.hasOwnProperty(userCurrency);
         
         if (userCurrency !== 'USD' && !isRateDefined) {
-             setConversionFailed(true); 
+            setConversionFailed(true); 
         } else {
-             setConversionFailed(false); 
+            setConversionFailed(false); 
         }
         
         return true; 
     }, []);
 
-    // 2c. Load all data and set currency context on component mount
+    // Load Data Effect (UNCHANGED)
     useEffect(() => {
         const loadAllData = async () => {
-            // Wait for both the currency context and the API data before finishing loading
             await Promise.all([
                 fetchPricingData(),
                 setLocalPricingContext()
             ]);
-            
             setIsLoading(false);
         };
 
@@ -199,7 +168,7 @@ export default function ServiceSection() {
     }, [fetchPricingData, setLocalPricingContext]);
 
 
-    // --- Data processing and rendering helpers (Unchanged) ---
+    // Data Processing and Conversion
     const { newAppPricing, existingAppPricing } = basePricingData;
     let pricingList = activeTab === 'new' ? newAppPricing : existingAppPricing;
     const shouldShowBudgetPlan = activeTab === 'new';
@@ -223,18 +192,32 @@ export default function ServiceSection() {
         pricingList = [...pricingList, convertedBudgetPlan];
     }
 
-    // --- Price CONVERSION (The core logic) ---
+    // --- Price CONVERSION & Slug Assignment ---
     const convertedPricingList = pricingList.map(plan => {
         const basePrice = getNumericalPrice(plan);
         const formattedPrice = formatPrice(basePrice, exchangeRate, localCurrencyCode);
 
+        // Map plan names to the correct Cal.com slug for the CTA
+        let calSlug = MEETING_SLUGS.PROJECT_DISCUSSION; // Use PROP version of MEETING_SLUGS
+        if (plan.name.toLowerCase().includes('frontend')) {
+            calSlug = MEETING_SLUGS.FRONTEND_DEV;
+        } else if (plan.name.toLowerCase().includes('mvp')) {
+            calSlug = MEETING_SLUGS.MVP_DEV;
+        } else if (plan.name.toLowerCase().includes('full cycle')) {
+            // NOTE: Assumes MEETING_SLUGS.FULL_CYCLE_APP_DEV is defined
+            calSlug = MEETING_SLUGS.FULL_CYCLE_APP_DEV || MEETING_SLUGS.PROJECT_DISCUSSION;
+        } else if (plan.name.toLowerCase().includes('budget')) {
+            calSlug = MEETING_SLUGS.BUDGET_LANDING_PAGE;
+        }
+        
         return {
             ...plan,
             price: formattedPrice, 
+            calSlug: calSlug, 
         };
     });
 
-    // Conditional Rendering for Loading and Error States
+    // Conditional Rendering for Loading and Error States (UNCHANGED)
     if (isLoading) {
         return (
             <div className="w-full min-h-screen flex items-center justify-center bg-white text-black">
@@ -256,7 +239,7 @@ export default function ServiceSection() {
         return 'grid-cols-1 md:grid-cols-3';
     };
 
-    // Render Component with Dynamic Data
+    // Render Component with Dynamic Data (UNCHANGED)
     return (
         <section className="w-full bg-white text-black py-16 px-4">
             <div className="max-w-7xl mx-auto flex flex-col items-center justify-center">
@@ -274,9 +257,10 @@ export default function ServiceSection() {
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">{header.title}</h2>
                     <p className="text-gray-500 text-lg max-w-2xl mx-auto">{header.subtitle}</p>
                     
-                    {/* Localization Context Message (Dynamic) */}
+                    {/* Localization Context Message */}
                     <p className="mt-4 text-sm font-medium text-gray-600">
                         Prices are based on a **USD** reference and converted to your local currency: **{localCurrencyCode}**
+                        {/* ... exchange rate messaging ... */}
                         {exchangeRate !== 1 && (
                             <span className="ml-2">(1 USD ≈ {exchangeRate} {localCurrencyCode} - *Controlled Static Rate*)</span>
                         )}
@@ -284,14 +268,14 @@ export default function ServiceSection() {
                             <span className="ml-2"> (Rate not defined. Price is shown in {localCurrencyCode} using a **1:1 USD** parity.)</span>
                         )}
                         {conversionFailed && (
-                             <span className="block mt-1 text-xs text-red-500">
+                            <span className="block mt-1 text-xs text-red-500">
                                 Rate for {localCurrencyCode} not defined. Price shown with **1:1 USD** parity.
-                             </span>
+                            </span>
                         )}
                     </p>
                 </div>
 
-                {/* Toggle Buttons (unchanged) */}
+                {/* Toggle Buttons */}
                 <div className="flex gap-4 justify-center mb-14">
                     <button
                         onClick={() => setActiveTab('new')}
@@ -343,7 +327,7 @@ export default function ServiceSection() {
                                     backgroundColor: isRecommended ? 'rgba(1, 247, 247, 0.05)' : 'rgb(255, 255, 255)'
                                 }}
                             >
-                                {/* Recommended Badge (unchanged) */}
+                                {/* Recommended Badge */}
                                 {isRecommended && (
                                     <div
                                         className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide"
@@ -353,21 +337,20 @@ export default function ServiceSection() {
                                     </div>
                                 )}
 
-                                {/* Plan Header (unchanged) */}
+                                {/* Plan Header */}
                                 <div className="mb-6 flex-shrink-0">
                                     <h3 className="text-2xl font-bold text-black mb-2">{plan.name}</h3>
                                     <p className="text-gray-500 text-sm">{plan.subtitle}</p>
                                 </div>
 
-                                {/* Price Section: Uses the DYNAMICALLY CONVERTED PRICE */}
+                                {/* Price Section */}
                                 <div className="mb-8 flex-shrink-0">
                                     <div className="flex items-baseline">
-                                        {/* plan.price is now the formatted local currency string */}
                                         <span className="text-5xl font-bold text-black">{plan.price}</span>
                                     </div>
                                 </div>
 
-                                {/* Features List (unchanged) */}
+                                {/* Features List */}
                                 <ul className="space-y-3.5 mb-8 flex-grow">
                                     {(plan.features || []).map((feature, featureIndex) => (
                                         <li key={featureIndex} className="flex items-start gap-3">
@@ -381,8 +364,9 @@ export default function ServiceSection() {
                                     ))}
                                 </ul>
 
-                                {/* CTA Button (unchanged) */}
+                                {/* CTA Button: Calls the centralized openChat prop with the correct slug */}
                                 <button
+                                    onClick={() => openChat(plan.calSlug)}
                                     className={`
                                         w-full py-3 px-4 rounded-lg font-semibold transition-all duration-300
                                         flex-shrink-0
