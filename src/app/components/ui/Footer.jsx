@@ -12,7 +12,7 @@ export default function Footer() {
 
           {/* Brand Section */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
-            <img src="/tech.jpg" alt="TechQuanta Logo" className="h-12 w-auto rounded-md" />
+            <img src="/tech.png" alt="TechQuanta Logo" className="h-12 w-auto rounded-md" />
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
               TechQuanta<span className="text-[#01f7f7]">_Services</span>
             </h2>
@@ -26,13 +26,13 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
             <ul className="space-y-3 text-gray-400">
               <li className="hover:text-[#01f7f7] cursor-pointer transition-colors duration-300">
-                About Us
-              </li>
-              <li className="hover:text-[#01f7f7] cursor-pointer transition-colors duration-300">
-                Services
-              </li>
-              <li className="hover:text-[#01f7f7] cursor-pointer transition-colors duration-300">
                 Testimonials
+              </li>
+              <li className="hover:text-[#01f7f7] cursor-pointer transition-colors duration-300">
+                Our work
+              </li>
+              <li className="hover:text-[#01f7f7] cursor-pointer transition-colors duration-300">
+                  FAQ's
               </li>
               <li className="hover:text-[#01f7f7] cursor-pointer transition-colors duration-300">
                 Contact

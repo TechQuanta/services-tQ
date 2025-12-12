@@ -13,7 +13,7 @@ export default function Hero({ openChat, MEETING_SLUGS }) {
     }
     
     return (
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-4 py-20 text-center">
+        <div className="relative z-10 mx-auto mt-[100px] md:mt-0 flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-4 py-20 text-center">
 
             {/* Background Elements */}
             <Spotlight
@@ -32,11 +32,11 @@ export default function Hero({ openChat, MEETING_SLUGS }) {
             {/* Main Heading */}
             <h1 className="text-center text-4xl font-bold text-neutral-900 md:text-6xl lg:text-7xl relative">
 
-                <div className="absolute -top-12 -left-10 md:-top-16 md:-left-20 z-20 rotate-[-5deg]">
+                <div className="absolute -top-12 -left-10 md:-top-16 md:-left-20 z-20 rotate-[-5deg] pl-6 ">
                     <img
                         src="/rocket.png"
                         alt="Rocket"
-                        className="w-[60px] h-[60px] md:w-[100px] md:h-[100px]"
+                        className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] "
                     />
                 </div>
 
@@ -74,7 +74,8 @@ export default function Hero({ openChat, MEETING_SLUGS }) {
                     <img src="/google-meet.svg" alt="Meet Icon" className="h-5 w-5" />
                     Book Project Discussion
                 </button>
-                <button className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-neutral-900 px-8 py-3 font-semibold text-neutral-900 transition-all hover:bg-neutral-50 active:scale-95">
+                <button className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-neutral-900 px-8 py-3 font-semibold text-neutral-900 transition-all hover:bg-neutral-50 active:scale-95"
+                onClick={() => window.location.href='/work'}>
                     <img src="/portfolio.png" alt="Portfolio" className="h-5 w-5" />
                     Portfolio
                 </button>

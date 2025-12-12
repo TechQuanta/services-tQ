@@ -1,23 +1,14 @@
-// Example: The file where IntroChatDrawer actually wraps the content
+// /pricing/page.jsx (or MyPage.jsx)
+// NO "use client" directive here.
 
-import IntroChatDrawer, { MEETING_SLUGS } from '@/app/components/ui/Meet';
-import Hero from '@/app/components/ui/Hero';
-import ServiceSectionWrapper from '@/app/components/section/ServiceSection'; // The integrated one
+import PricingClientWrapper from '@/app/components/page/PricingClientWrapper'; // Import the new wrapper
+// NOTE: You no longer need to import IntroChatDrawer, Hero, or ServiceSectionWrapper here.
+// NOTE: You no longer need to import MEETING_SLUGS here IF it's only used inside the wrapper.
 
 export default function MyPage() {
+    // This is the clean server component render.
+    // It passes a serializable component tag, not a function prop.
     return (
-        <IntroChatDrawer>
-            {({ openChat }) => (
-                <main>
-                    {/* The Hero component receives the props */}
-                    <Hero openChat={openChat} MEETING_SLUGS={MEETING_SLUGS} />
-                    
-                    {/* The ServiceSectionWrapper already handles the props internally */}
-                    <ServiceSectionWrapper /> 
-                    
-                    {/* Other components... */}
-                </main>
-            )}
-        </IntroChatDrawer>
+        <PricingClientWrapper />
     );
 }

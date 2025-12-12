@@ -31,7 +31,7 @@ export default function Navbar({ openChat, MEETING_SLUGS }) {
     const navLinks = useMemo(() => [
         { name: "Our Work", href: "/work" },
         { name: "Testimonials", href: "/testimonial" },
-        { name: "FAQs", href: "/faqs" },
+        { name: "Pricing", href: '#Pricing' },
         { name: "Blog", href: "/blog" }, 
     ], []);
 

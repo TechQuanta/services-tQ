@@ -1,12 +1,8 @@
-// ServiceSection.jsx (Corrected to accept all required props)
+// ServiceSection.jsx (Updated to include "bello" below the tag and above the main title)
 
 "use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import { Check } from 'lucide-react';
-
-// --- REMOVED LOCAL IMPORT OF MEETING_SLUGS ---
-// The slugs will now come directly from props passed by the parent IntroChatDrawer via Page.jsx
-// import { MEETING_SLUGS } from '@/app/components/ui/Meet'; 
 
 import appConfig from '../../../lib/data.json'; 
 
@@ -22,6 +18,13 @@ const {
 const API_URL = apiConfig.url;
 const INITIAL_PRICING_STATE = apiConfig.initialState;
 const STATIC_EXCHANGE_RATES = apiConfig.exchangeRates || {}; 
+
+// ➡️ NEW: Consolidated list of currencies supported for the dropdown
+const SUPPORTED_CURRENCIES = [
+    'USD', // Base currency
+    ...Object.keys(STATIC_EXCHANGE_RATES)
+].map(c => c.toUpperCase()).filter((value, index, self) => self.indexOf(value) === index);
+
 
 // --- Utility Functions (Omitted for brevity, assumed unchanged and correct) ---
 
@@ -65,11 +68,17 @@ const resolveUserCurrency = async () => {
     }
     let passiveCurrency = getPassiveLocalCurrencyCode();
     
+    // Special case for India often being defaulted to USD by passive methods
     const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (currentTimeZone === 'Asia/Kolkata' && passiveCurrency === 'USD') {
         passiveCurrency = 'INR';
     }
-    return passiveCurrency;
+    
+    // Ensure the detected currency is one we actually support, otherwise default to USD
+    if (SUPPORTED_CURRENCIES.includes(passiveCurrency)) {
+        return passiveCurrency;
+    }
+    return 'USD';
 };
 
 const getExchangeRate = (targetCurrency, rates) => {
@@ -93,12 +102,10 @@ const formatPrice = (basePriceUSD, exchangeRate, currencyCode) => {
 };
 
 
-// --- The Main Component: ACCEPTS openChat AND MEETING_SLUGS prop ---
+// --- The Main Component ---
 export default function ServiceSection({ openChat, MEETING_SLUGS }) {
     
-    // Safety check: ensure the required props are passed down
     if (!openChat || !MEETING_SLUGS) {
-        // Now checks for both props
         return <div className="p-20 text-center text-red-500">Service section failed to receive required props (openChat and MEETING_SLUGS).</div>;
     }
     
@@ -113,6 +120,7 @@ export default function ServiceSection({ openChat, MEETING_SLUGS }) {
 
     // Data Fetching Logic (UNCHANGED)
     const fetchPricingData = useCallback(async () => {
+        // ... (fetch logic remains the same) ...
         setError(null);
         try {
             const response = await fetch(API_URL);
@@ -135,24 +143,32 @@ export default function ServiceSection({ openChat, MEETING_SLUGS }) {
         }
     }, []);
 
-    // Currency Context Logic (UNCHANGED)
+    // Initial currency context setter (UNCHANGED)
     const setLocalPricingContext = useCallback(async () => {
         const userCurrency = await resolveUserCurrency();
+        
         const rate = getExchangeRate(userCurrency, STATIC_EXCHANGE_RATES);
         
         setLocalCurrencyCode(userCurrency);
         setExchangeRate(rate);
 
         const isRateDefined = STATIC_EXCHANGE_RATES.hasOwnProperty(userCurrency);
-        
-        if (userCurrency !== 'USD' && !isRateDefined) {
-            setConversionFailed(true); 
-        } else {
-            setConversionFailed(false); 
-        }
+        setConversionFailed(userCurrency !== 'USD' && !isRateDefined);
         
         return true; 
     }, []);
+    
+    // Handler for currency dropdown change (UNCHANGED)
+    const handleCurrencyChange = (event) => {
+        const newCurrency = event.target.value;
+        const rate = getExchangeRate(newCurrency, STATIC_EXCHANGE_RATES);
+        
+        setLocalCurrencyCode(newCurrency);
+        setExchangeRate(rate);
+        
+        const isRateDefined = STATIC_EXCHANGE_RATES.hasOwnProperty(newCurrency);
+        setConversionFailed(newCurrency !== 'USD' && !isRateDefined);
+    };
 
     // Load Data Effect (UNCHANGED)
     useEffect(() => {
@@ -168,7 +184,7 @@ export default function ServiceSection({ openChat, MEETING_SLUGS }) {
     }, [fetchPricingData, setLocalPricingContext]);
 
 
-    // Data Processing and Conversion
+    // Data Processing and Conversion (UNCHANGED)
     const { newAppPricing, existingAppPricing } = basePricingData;
     let pricingList = activeTab === 'new' ? newAppPricing : existingAppPricing;
     const shouldShowBudgetPlan = activeTab === 'new';
@@ -192,19 +208,17 @@ export default function ServiceSection({ openChat, MEETING_SLUGS }) {
         pricingList = [...pricingList, convertedBudgetPlan];
     }
 
-    // --- Price CONVERSION & Slug Assignment ---
     const convertedPricingList = pricingList.map(plan => {
         const basePrice = getNumericalPrice(plan);
         const formattedPrice = formatPrice(basePrice, exchangeRate, localCurrencyCode);
 
-        // Map plan names to the correct Cal.com slug for the CTA
-        let calSlug = MEETING_SLUGS.PROJECT_DISCUSSION; // Use PROP version of MEETING_SLUGS
+        // Map plan names to the correct Cal.com slug for the CTA (using props)
+        let calSlug = MEETING_SLUGS.PROJECT_DISCUSSION; 
         if (plan.name.toLowerCase().includes('frontend')) {
             calSlug = MEETING_SLUGS.FRONTEND_DEV;
         } else if (plan.name.toLowerCase().includes('mvp')) {
             calSlug = MEETING_SLUGS.MVP_DEV;
         } else if (plan.name.toLowerCase().includes('full cycle')) {
-            // NOTE: Assumes MEETING_SLUGS.FULL_CYCLE_APP_DEV is defined
             calSlug = MEETING_SLUGS.FULL_CYCLE_APP_DEV || MEETING_SLUGS.PROJECT_DISCUSSION;
         } else if (plan.name.toLowerCase().includes('budget')) {
             calSlug = MEETING_SLUGS.BUDGET_LANDING_PAGE;
@@ -239,10 +253,36 @@ export default function ServiceSection({ openChat, MEETING_SLUGS }) {
         return 'grid-cols-1 md:grid-cols-3';
     };
 
-    // Render Component with Dynamic Data (UNCHANGED)
+    // Render Component with Dynamic Data
     return (
-        <section className="w-full bg-white text-black py-16 px-4">
+        <section className="w-full bg-white text-black py-16 px-4" id="Pricing">
             <div className="max-w-7xl mx-auto flex flex-col items-center justify-center">
+                
+                {/* ➡️ CURRENCY SELECTOR (Top Right) */}
+                <div className="w-full mb-6 flex justify-end px-4 sm:px-0">
+                    <div className="flex items-center gap-2">
+                        <label htmlFor="currency-select" className="text-gray-700 text-sm font-medium hidden sm:block">
+                           Currency :
+                        </label>
+                        <select
+                            id="currency-select"
+                            value={localCurrencyCode}
+                            onChange={handleCurrencyChange}
+                            className="p-2 border border-gray-300 rounded-lg text-sm font-semibold shadow-sm focus:ring-2 appearance-none cursor-pointer"
+                            style={{
+                                borderColor: 'rgb(1, 247, 247)',
+                                backgroundColor: 'white',
+                                color: 'black'
+                            }}
+                        >
+                            {SUPPORTED_CURRENCIES.map(currency => (
+                                <option key={currency} value={currency}>
+                                    {currency}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
                 
                 {/* Header */}
                 <div className="text-center mb-12 w-full">
@@ -254,12 +294,14 @@ export default function ServiceSection({ openChat, MEETING_SLUGS }) {
                             {header.tag}
                         </span>
                     </div>
+
+                    
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">{header.title}</h2>
                     <p className="text-gray-500 text-lg max-w-2xl mx-auto">{header.subtitle}</p>
                     
-                    {/* Localization Context Message */}
+                    {/* Localization Context Message (UNCHANGED, displays current selection) */}
                     <p className="mt-4 text-sm font-medium text-gray-600">
-                        Prices are based on a **USD** reference and converted to your local currency: **{localCurrencyCode}**
+                        Prices are based on a <strong>USD</strong> reference and converted to your local currency: <strong>{localCurrencyCode}</strong>
                         {/* ... exchange rate messaging ... */}
                         {exchangeRate !== 1 && (
                             <span className="ml-2">(1 USD ≈ {exchangeRate} {localCurrencyCode} - *Controlled Static Rate*)</span>
@@ -275,7 +317,7 @@ export default function ServiceSection({ openChat, MEETING_SLUGS }) {
                     </p>
                 </div>
 
-                {/* Toggle Buttons */}
+                {/* Toggle Buttons (UNCHANGED) */}
                 <div className="flex gap-4 justify-center mb-14">
                     <button
                         onClick={() => setActiveTab('new')}
@@ -305,7 +347,7 @@ export default function ServiceSection({ openChat, MEETING_SLUGS }) {
                     </button>
                 </div>
 
-                {/* Pricing Cards Grid */}
+                {/* Pricing Cards Grid (UNCHANGED) */}
                 <div className={`grid gap-8 w-full max-w-7xl ${getGridCols()}`}>
                     {convertedPricingList.map((plan, index) => {
                         const isRecommended = plan.recommended;

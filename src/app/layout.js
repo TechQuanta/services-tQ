@@ -1,6 +1,5 @@
 import { Poppins, Roboto, Raleway } from "next/font/google";
 import "./globals.css";
-import { SmoothCursor } from "@/components/ui/smooth-cursor";
 import { ValuesProvider } from "@/context/ValuesContext";
 
 // Headings
@@ -35,7 +34,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} ${roboto.variable} ${raleway.variable} antialiased`}
       >
-        <SmoothCursor  className="z-[110] overflow-hidden"/>
+
         <ValuesProvider>
           {children}
         </ValuesProvider>
