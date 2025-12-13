@@ -48,19 +48,6 @@ export default function ProjectsPage() {
       ],
       link: "https://aceresume.techquanta.tech/",
     },
-    {
-      name: "Social X",
-      description:
-        "SocialX is a powerful automation platform to schedule up to 500 posts across Twitter, Reddit, and LinkedIn. It ensures real-time publishing with a cron-based system and secure OAuth 2.0 authentication. Key features include bulk scheduling, precise timing control, and a visual calendar view to manage your entire social media presence effectively.",
-      image: "/socialx.png",
-      features: [
-        "Automation Tool Integration",
-        "Multi App Support",
-        "Post Scheduling",
-        "Efficient Pipelining",
-      ],
-      link: "https://socialx.arshfs.tech",
-    },
   ];
 
   const [visibleCount, setVisibleCount] = useState(3); // show 3 projects initially
