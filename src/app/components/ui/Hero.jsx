@@ -1,43 +1,53 @@
-// Hero.jsx 
 "use client";
 
-import { Spotlight } from "../../../components/ui/spotlight";
-import { DotPattern } from "../../../components/ui/dot-pattern";
-import { ContainerTextFlip } from "../../../components/ui/container-text-flip";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+
+const ContainerTextFlip = dynamic(
+  () =>
+    import("../../../components/ui/container-text-flip").then(
+      (mod) => mod.ContainerTextFlip
+    ),
+  { ssr: false }
+);
 
 export default function Hero({ openChat, MEETING_SLUGS }) {
-    
-    // Console error check is kept to track the rogue rendering
-    if (!openChat || !MEETING_SLUGS) {
-        console.error("Hero component requires openChat and MEETING_SLUGS props.");
-    }
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!openChat || !MEETING_SLUGS) {
+    console.error("Hero component requires openChat and MEETING_SLUGS props.");
+  }
     
     return (
         <div className="relative z-10 mx-auto mt-[100px] md:mt-0 flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-4 py-20 text-center">
 
             {/* Background Elements */}
-            <Spotlight
-                className="-top-40 left-0 md:left-60 md:-top-20"
-                fill="#01f7f7"
-            />
-            <DotPattern
-                width={20}
-                height={20}
-                cx={1}
-                cy={1}
-                cr={1}
-                className="[mask-image:linear-gradient(to_bottom,white,transparent)] opacity-40"
-            />
+     
+          
 
             {/* Main Heading */}
             <h1 className="text-center text-4xl font-bold text-neutral-900 md:text-6xl lg:text-7xl relative">
 
                 <div className="absolute -top-12 -left-10 md:-top-16 md:-left-20 z-20 rotate-[-5deg] pl-6 ">
-                    <img
+                    <Image
+  src="/rocket.png"
+  alt="Rocket"
+  width={100}
+  height={100}
+  priority
+  className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] rotate-[-5deg]"
+/>
+
+                    {/* <img
                         src="/rocket.png"
                         alt="Rocket"
                         className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] "
-                    />
+                    /> */}
                 </div>
 
                 <span className="relative z-10">
@@ -54,7 +64,13 @@ export default function Hero({ openChat, MEETING_SLUGS }) {
                             "0 0 20px rgba(1, 247, 247, 0.4), inset 0 0 10px rgba(1, 247, 247, 0.2)",
                     }}
                 >
-                    Idea to MVP in <ContainerTextFlip words={["Months", "Weeks", "Days"]} />
+                   Idea to MVP in{" "}
+{mounted ? (
+  <ContainerTextFlip words={["Months", "Weeks", "Days"]} />
+) : (
+  <span className="inline-block text-black min-w-[90px]">Weeks</span>
+)}
+
                 </span>
 
             </h1>

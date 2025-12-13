@@ -134,7 +134,7 @@ export default function FAQPage() {
         </h1>
           <button
             onClick={() => router.push("/")}
-            className="px-6 py-2 rounded-lg border bg-black border-gray-300 text-white font-semibold hover:bg-gray-100 transition-colors"
+            className="px-6 py-2 rounded-lg border hover:text-black bg-black border-gray-300 text-white font-semibold hover:bg-gray-100 transition-colors"
           >
             Go Back to Home
           </button>

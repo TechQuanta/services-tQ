@@ -12,7 +12,6 @@ import Chatbot from "@/app/components/ui/AiAssist";
 import TechStack from "./components/section/TechStack";
 
 import { DotPattern } from "../../src/components/ui/dot-pattern";
-import { Spotlight } from "../../src/components/ui/spotlight";
 import Hero from "./components/ui/Hero";
 
 export default function Page() {
@@ -48,10 +47,7 @@ export default function Page() {
                                 <DotPattern className="h-full w-full opacity-40" />
                             </div>
 
-                            <Spotlight
-                                className="-top-40 left-1/2 -translate-x-1/2 md:-top-20"
-                                fill="white"
-                            />
+                         
 
                             {/* HERO SECTION */}
                             <section className="w-full flex flex-col items-center justify-center px-4">

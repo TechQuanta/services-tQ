@@ -3,11 +3,12 @@
     "navbar": {
       "desktopDrawerWidth": 384,
       "desktopDrawerWidthClass": "w-96",
-      "navLinks": [
-        { "name": "Our Work", "href": "/work" },
-        { "name": "Testimonials", "href": "/testimonial" },
-        { "name": "Pricing", "href": "https://services.techquanta.tech/#Pricing" }
-      ],
+     "navLinks": [
+  { "name": "Home", "href": "/" },
+  { "name": "Pricing", "href": "#Pricing" },
+  { "name": "About", "href": "#About" },
+  { "name": "Services", "href": "#Services" }
+],
       "meetingSlugs": {
         "MVP_DEV": "techquanta-ukwkct/mvp-development",
         "FRONTEND_DEV": "techquanta-ukwkct/frontend-development",

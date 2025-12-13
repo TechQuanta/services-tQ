@@ -3,9 +3,17 @@
 "use client";
 import { useMemo, useContext } from "react";
 import { Menu, X } from 'lucide-react'; 
-import MenuSidebar from "@/components/ui/MenuSidebar";
 import { ValuesContext } from "@/context/ValuesContext";
 import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
+import dynamic from "next/dynamic";
+
+const MenuSidebar = dynamic(
+  () => import("@/components/ui/MenuSidebar"),
+  { ssr: false }
+);
 
 // 1. IMPORT THE CENTRAL CONFIG DATA
 import configData from "@/lib/data.json"; // Adjust path as needed
@@ -21,7 +29,12 @@ const {
 
 // The Navbar now accepts the control functions as props from the parent (AppWrapper)
 export default function Navbar({ openChat, MEETING_SLUGS, isChatOpen }) {
-    
+    const [mounted, setMounted] = useState(false);
+
+useEffect(() => {
+  setMounted(true);
+}, []);
+
     // ValuesContext still handles the Mobile Nav Sidebar (Right Drawer)
     const { openSidebar, setOpenSidebar } = useContext(ValuesContext);
     
@@ -36,29 +49,77 @@ export default function Navbar({ openChat, MEETING_SLUGS, isChatOpen }) {
             openChat(MEETING_SLUGS.QUICK_INTRO);
         }
     };
+
+    // Smooth scroll to section
+    const handleSmoothScroll = (e, sectionId) => {
+        e.preventDefault();
+        
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+            setOpenSidebar(false); // Close mobile menu if open
+        }
+    };
     
     // --- DESKTOP RENDERERS ---
-    const DesktopLink = ({ name, href }) => (
-        <Link 
-            href={href} 
-            className="relative text-gray-700 hover:text-black transition-colors duration-300 group font-medium"
-        >
-            {name}
-            {/* Animated Underline Effect */}
-            <span className="absolute bottom-[-5px] left-0 w-full h-[2px] bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-        </Link>
-    );
+    const DesktopLink = ({ name, href }) => {
+        // Check if link should scroll to a section (ID-based)
+        const isSectionLink = href.startsWith("#");
+        
+        if (isSectionLink) {
+            return (
+                <button
+                    onClick={(e) => handleSmoothScroll(e, href.slice(1))}
+                    className="relative text-gray-700 hover:text-black transition-colors duration-300 group font-medium bg-none border-none cursor-pointer"
+                >
+                    {name}
+                    {/* Animated Underline Effect */}
+                    <span className="absolute bottom-[-5px] left-0 w-full h-[2px] bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                </button>
+            );
+        }
+
+        return (
+            <Link 
+                href={href} 
+                className="relative text-gray-700 hover:text-black transition-colors duration-300 group font-medium"
+            >
+                {name}
+                {/* Animated Underline Effect */}
+                <span className="absolute bottom-[-5px] left-0 w-full h-[2px] bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+            </Link>
+        );
+    };
 
     // --- MOBILE RENDERERS ---
-    const MobileLink = ({ name, href, onClick }) => (
-        <Link 
-            href={href} 
-            onClick={onClick}
-            className="block py-3 text-gray-800 hover:bg-gray-100/70 rounded-md px-3 transition-colors duration-200"
-        >
-            {name}
-        </Link>
-    );
+    const MobileLink = ({ name, href, onClick }) => {
+        // Check if link should scroll to a section (ID-based)
+        const isSectionLink = href.startsWith("#");
+        
+        if (isSectionLink) {
+            return (
+                <button
+                    onClick={(e) => {
+                        handleSmoothScroll(e, href.slice(1));
+                        onClick?.();
+                    }}
+                    className="block w-full text-left py-3 text-gray-800 hover:bg-gray-100/70 rounded-md px-3 transition-colors duration-200 bg-none border-none cursor-pointer"
+                >
+                    {name}
+                </button>
+            );
+        }
+
+        return (
+            <Link 
+                href={href} 
+                onClick={onClick}
+                className="block py-3 text-gray-800 hover:bg-gray-100/70 rounded-md px-3 transition-colors duration-200"
+            >
+                {name}
+            </Link>
+        );
+    };
 
     // Using the imported JSON config for the width and the passed prop for state
     const DESKTOP_DRAWER_WIDTH = desktopDrawerWidth; 
@@ -70,18 +131,36 @@ export default function Navbar({ openChat, MEETING_SLUGS, isChatOpen }) {
                 className="w-full fixed top-0 left-0 bg-white/80 backdrop-blur-lg border-b border-gray-100 z-50 transition-all duration-500 ease-in-out shadow-lg"
                 // 🚨 SHIFTING NAVBAR LOGIC 🚨
                 // This logic is now dependent on the isChatOpen prop from the parent
-                style={{
-                    // IMPORTANT: Assuming isChatOpen is correctly passed as a prop now
-                    transform: isChatOpen ? `translateX(${DESKTOP_DRAWER_WIDTH}px)` : 'translateX(0)',
-                    width: isChatOpen ? `calc(100% - ${DESKTOP_DRAWER_WIDTH}px)` : '100%',
-                }}
+                style={
+  mounted
+    ? {
+        transform: isChatOpen
+          ? `translateX(${DESKTOP_DRAWER_WIDTH}px)`
+          : "translateX(0)",
+        width: isChatOpen
+          ? `calc(100% - ${DESKTOP_DRAWER_WIDTH}px)`
+          : "100%",
+      }
+    : undefined
+}
+
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
                     
                     {/* LOGO */}
                     <div className="text-2xl font-bold text-gray-900 tracking-wider pl-10">
-                        <Link href="/" ><img src="/tech.png" alt="Logo" className="h-10 w-auto rounded-md" /></Link>
-                    </div>
+  <Link href="/">
+    <Image
+      src="/tech.png"
+      alt="TechQuanta Logo"
+      width={160}
+      height={40}
+      priority
+      className="h-10 w-auto rounded-md"
+    />
+  </Link>
+</div>
+
 
                     {/* DESKTOP LINKS (DATA FROM JSON) */}
                     <div className="hidden md:flex items-center gap-8 lg:gap-10 text-gray-700 text-base">

@@ -59,7 +59,7 @@ export default function ProjectsPage() {
         "Post Scheduling",
         "Efficient Pipelining",
       ],
-      link: "socialx.arshfs.tech",
+      link: "https://socialx.arshfs.tech",
     },
   ];
 
@@ -79,7 +79,7 @@ export default function ProjectsPage() {
           </h1>
           <button
             onClick={() => router.push("/")}
-            className="px-6 py-2 rounded-lg border bg-black border-gray-300 text-white font-semibold hover:bg-gray-100 transition-colors"
+            className="px-6 py-2 rounded-lg border bg-black border-gray-300 text-white font-semibold hover:bg-gray-100 hover:text-black transition-colors"
           >
             Go Back to Home
           </button>
@@ -122,7 +122,7 @@ export default function ProjectsPage() {
           <div className="flex justify-center mt-10">
             <button
               onClick={loadMore}
-              className="px-6 py-2 rounded-lg border bg-black border-gray-300 text-white font-semibold hover:bg-gray-100 transition-colors"
+              className="px-6 py-2 rounded-lg border bg-black hover:text-black border-gray-300 text-white font-semibold hover:bg-gray-100 transition-colors"
             >
               Load More Projects
             </button>

@@ -25,7 +25,7 @@ const raleway = Raleway({
 
 export const metadata = {
   title: "TechQuanta_Services",
-  description: "A web development agency specializing in modern, scalable applications.",
+  description: "A web development agency turning your ideas into MVP.",
 };
 
 export default function RootLayout({ children }) {

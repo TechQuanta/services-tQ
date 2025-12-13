@@ -1,13 +1,29 @@
 "use client";
 
 import React from "react";
-import WorldMap from "../../../components/ui/world-map";
-import MagicBento from "../../../components/ui/MagicBento";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+const MagicBento = dynamic(
+  () => import("../../../components/ui/MagicBento"),
+  { ssr: false }
+);
+
+const WorldMap = dynamic(
+  () => import("../../../components/ui/world-map"),
+  { ssr: false }
+);
+
 import appConfig from '@/lib/data.json'; 
 
 const { howWeWork, coverage } = appConfig.pages.aboutPage.sections;
 
 function AboutSection() {
+  const [mounted, setMounted] = useState(false);
+
+useEffect(() => {
+  setMounted(true);
+}, []);
+
   return (
     <section className="w-full flex flex-col items-center justify-center text-center gap-20 py-20 px-4">
 
