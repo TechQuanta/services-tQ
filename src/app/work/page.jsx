@@ -20,6 +20,7 @@ export default function ProjectsPage() {
         "Automate App Creation",
         "App Building Tool Integrated",
       ],
+      link: "https://aiconnect-bp.vercel.app/",
     },
     {
       name: "SCSIT Last Miniute",
@@ -32,6 +33,7 @@ export default function ProjectsPage() {
         "College Student Funded",
         "Documentation Support For Student",
       ],
+      link: "https://last-minute-scsit.vercel.app/",
     },
     {
       name: "Applicant Ace",
@@ -44,8 +46,9 @@ export default function ProjectsPage() {
         "Integrated Paraphrasing Tool",
         "Resume Templates",
       ],
+      link: "https://aceresume.techquanta.tech/",
     },
-        {
+    {
       name: "Social X",
       description:
         "SocialX is a powerful automation platform to schedule up to 500 posts across Twitter, Reddit, and LinkedIn. It ensures real-time publishing with a cron-based system and secure OAuth 2.0 authentication. Key features include bulk scheduling, precise timing control, and a visual calendar view to manage your entire social media presence effectively.",
@@ -56,8 +59,8 @@ export default function ProjectsPage() {
         "Post Scheduling",
         "Efficient Pipelining",
       ],
+      link: "socialx.arshfs.tech",
     },
-
   ];
 
   const [visibleCount, setVisibleCount] = useState(3); // show 3 projects initially
@@ -85,9 +88,12 @@ export default function ProjectsPage() {
         {/* Project Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {allProjects.slice(0, visibleCount).map((project, i) => (
-            <div
+            <a
               key={i}
-              className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow flex flex-col"
+              href={project.link} // <-- Use the project link here
+              target="_blank" // Open in a new tab
+              rel="noopener noreferrer"
+              className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow flex flex-col cursor-pointer hover:border-[#01f7f7]" // Add hover effect to indicate clickability
             >
               {project.image && (
                 <img
@@ -107,7 +113,7 @@ export default function ProjectsPage() {
                   <li key={idx}>{feature}</li>
                 ))}
               </ul>
-            </div>
+            </a>
           ))}
         </div>
 

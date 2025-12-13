@@ -1,8 +1,11 @@
+"use client";
 import React from "react";
 import { ChevronDown, Cpu, Globe, Database, Layers, GitBranch, Settings, Zap, Box, Workflow } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function FAQPage() {
   const accent = "#01f7f7";
+  const router = useRouter();
 
   const faqs = [
     {
