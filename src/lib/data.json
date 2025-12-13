@@ -4,10 +4,10 @@
       "desktopDrawerWidth": 384,
       "desktopDrawerWidthClass": "w-96",
      "navLinks": [
+  
   { "name": "Home", "href": "/" },
-  { "name": "Pricing", "href": "#Pricing" },
-  { "name": "About", "href": "#About" },
-  { "name": "Services", "href": "#Services" }
+  { "name": "OurWork", "href": "/work" },
+  { "name": "Pricing", "href": "#Pricing" }
 ],
       "meetingSlugs": {
         "MVP_DEV": "techquanta-ukwkct/mvp-development",
