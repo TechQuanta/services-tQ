@@ -1,7 +1,20 @@
-// meet.jsx (The Central Intro Chat Drawer)
+// src/components/IntroChatDrawer.jsx (The Central Intro Chat Drawer)
+
 "use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft } from 'lucide-react'; 
+
+// 1. IMPORT THE CENTRAL CONFIG DATA
+import configData from "@/lib/data.json"; // Adjust path as needed
+
+/* ----------------------------------------------------
+ * EXTRACT DATA FROM JSON
+ * ---------------------------------------------------- */
+const { 
+    desktopDrawerWidth: DESKTOP_DRAWER_WIDTH, 
+    desktopDrawerWidthClass: DESKTOP_DRAWER_WIDTH_CLASS, 
+    meetingSlugs: MEETING_SLUGS 
+} = configData.components.navbar; // Re-using the navbar path, or create a new 'chatDrawer' path
 
 // Function to load Cal.com embed JS (kept as is)
 const getCalApi = (config) => {
@@ -23,19 +36,6 @@ const getCalApi = (config) => {
     return Promise.resolve(null);
 };
 
-// Define the fixed width for the desktop drawer
-const DESKTOP_DRAWER_WIDTH_CLASS = 'w-96'; // 24rem
-const DESKTOP_DRAWER_WIDTH = 384; // 384px
-
-// --- Centralized Meeting Slugs ---
-export const MEETING_SLUGS = {
-    MVP_DEV: 'techquanta-ukwkct/mvp-development',
-    FRONTEND_DEV: 'techquanta-ukwkct/frontend-development',
-    BUDGET_LANDING_PAGE: 'techquanta-ukwkct/budget-landing-page',
-    PROJECT_DISCUSSION: 'techquanta-ukwkct/15min',
-    QUICK_INTRO: 'techquanta-ukwkct/30min', 
-    FULL_CYCLE_APP_DEV: 'techquanta-ukwkct/full-cycle-app-dev', 
-};
 
 /**
  * The IntroChatDrawer component acts as the centralized state manager.
@@ -77,8 +77,8 @@ export default function IntroChatDrawer({ children }) {
             {children({ 
                 openChat, 
                 isChatOpen, 
-                closeChat, // Added for completeness
-                DESKTOP_DRAWER_WIDTH, // Added for completeness
+                closeChat, 
+                DESKTOP_DRAWER_WIDTH, 
                 MEETING_SLUGS // CRUCIAL: Pass the slugs inside the render prop
             })}
             

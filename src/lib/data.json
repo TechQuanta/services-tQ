@@ -1,4 +1,40 @@
 {
+  "components": {
+    "navbar": {
+      "desktopDrawerWidth": 384,
+      "desktopDrawerWidthClass": "w-96",
+      "navLinks": [
+        { "name": "Our Work", "href": "/work" },
+        { "name": "Testimonials", "href": "/testimonial" },
+        { "name": "Pricing", "href": "https://services.techquanta.tech/#Pricing" }
+      ],
+      "meetingSlugs": {
+        "MVP_DEV": "techquanta-ukwkct/mvp-development",
+        "FRONTEND_DEV": "techquanta-ukwkct/frontend-development",
+        "BUDGET_LANDING_PAGE": "techquanta-ukwkct/budget-landing-page",
+        "PROJECT_DISCUSSION": "techquanta-ukwkct/15min",
+        "QUICK_INTRO": "techquanta-ukwkct/30min",
+        "FULL_CYCLE_APP_DEV": "techquanta-ukwkct/full-cycle-app-dev"
+      }
+    },
+    "footer": {
+      "logoPath": "/tech.png",
+      "logoText": "TechQuanta",
+      "logoAccent": "#01f7f7",
+      "motto": "Building smarter digital products through strategy, design, and modern engineering.",
+      "quickLinks": [
+        { "name": "Testimonials", "href": "/testimonial" },
+        { "name": "Our work", "href": "/work" },
+        { "name": "FAQ's", "href": "/faqs" }
+      ],
+      "contact": {
+        "email": "techquanta.services@gmail.com",
+        "phone": "+91 98765 43210",
+        "location": "Remote • India"
+      },
+      "copyright": "TechQuanta_Services — All rights reserved."
+    }
+  },
   "pages": {
     "aboutPage": {
       "sections": {
@@ -53,6 +89,71 @@
               "note": "New Delhi to Nairobi"
             }
           ]
+        },
+        "techStack": {
+          "title": "Our Tech Stack",
+          "subtitle": "The tools and technologies we use to build modern, scalable applications",
+          "accentColor": "#01f7f7",
+          "stacks": [
+            {
+              "title": "Frontend & UI",
+              "iconName": "Globe",
+              "items": [
+                { "name": "React.js", "iconKey": "ReactIcon", "alt": "React Logo" },
+                { "name": "Next.js", "iconKey": "Nextjs", "alt": "Next.js Logo" },
+                { "name": "TypeScript", "iconKey": "TypeScript", "alt": "TypeScript Logo" },
+                { "name": "Tailwind CSS", "iconKey": "TailwindCSS", "alt": "Tailwind CSS Logo" },
+                { "name": "HTML5", "iconKey": "HTML", "alt": "HTML5 Logo" },
+                { "name": "CSS3", "iconKey": "CSS", "alt": "CSS3 Logo" }
+              ]
+            },
+            {
+              "title": "Backend & APIs",
+              "iconName": "Cpu",
+              "items": [
+                { "name": "Python", "iconKey": "Python", "alt": "Python Logo" },
+                { "name": "Node.js", "iconKey": "Nodejs", "alt": "Node.js Logo" },
+                { "name": "FastAPI", "iconKey": "FastAPI", "alt": "FastAPI Logo" },
+                { "name": "Prisma ORM", "iconKey": "Prisma", "alt": "Prisma Logo" }
+              ]
+            },
+            {
+              "title": "Databases & ORMs",
+              "iconName": "Database",
+              "items": [
+                { "name": "PostgreSQL", "iconKey": "PostgreSQL", "alt": "PostgreSQL Logo" },
+                { "name": "MongoDB", "iconKey": "MongoDB", "alt": "MongoDB Logo" },
+                { "name": "Prisma", "iconKey": "Prisma", "alt": "Prisma Logo" }
+              ]
+            },
+            {
+              "title": "AI & Generative Systems",
+              "iconName": "Zap",
+              "items": [
+                { "name": "Gen-AI", "iconKey": "GenAI", "alt": "Generative AI Icon" },
+                { "name": "Python (ML)", "iconKey": "Python", "alt": "Python Logo" }
+              ]
+            },
+            {
+              "title": "DevOps & Deployment",
+              "iconName": "Settings",
+              "items": [
+                { "name": "Docker", "iconKey": "Docker", "alt": "Docker Logo" },
+                { "name": "Kubernetes", "iconKey": "Kubernetes", "alt": "Kubernetes Logo" },
+                { "name": "Vercel", "iconKey": "Vercel", "alt": "Vercel Logo" },
+                { "name": "Git", "iconKey": "Git", "alt": "Git Logo" }
+              ]
+            },
+            {
+              "title": "Automation & Integrations",
+              "iconName": "GitBranch",
+              "items": [
+                { "name": "n8n Workflows", "iconKey": "n8n", "alt": "n8n Logo" },
+                { "name": "Zapier", "iconKey": "Zapier", "alt": "Zapier Logo" },
+                { "name": "Sheet's", "iconKey": "AppScript", "alt": "AppScript Logo" }
+              ]
+            }
+          ]
         }
       }
     },
@@ -93,16 +194,52 @@
           "existingAppPricing": []
         },
         "defaultError": "Failed to load pricing plans. Please check the network and API status.",
-        
         "exchangeRates": {
-          "USD": 1,      
-          "INR": 82.5,   
-          "EUR": 0.90,   
-          "GBP": 0.78,   
-          "CAD": 1.35,   
+          "USD": 1, 
+          "INR": 82.5, 
+          "EUR": 0.90, 
+          "GBP": 0.78, 
+          "CAD": 1.35,  
           "AUD": 1.48
         }
       }
+    },
+    "testimonialsPage": {
+      "header": {
+        "title": "What Our Clients Say About Us",
+        "subtitle": "Real founders. Real products. Real impact. Hear from teams who trusted techQuanta_Services to build their vision."
+      },
+      "cta": {
+        "link": "/testimonial",
+        "buttonText": "Read All 50+ Client Stories",
+        "iconColor": "#01f7f7"
+      },
+      "testimonials": [
+        {
+          "type": "text",
+          "name": "Pradeep Telnar",
+          "title": "Founder, Skill Labs (Exited: $1M)",
+          "quote": " took complete ownership at every stage — incredibly reliable, fast, and always delivering high-quality work."
+        },
+        {
+          "type": "text",
+          "name": "Arav Bhosale",
+          "title": "Founder, TechInitHere",
+          "quote": "Their technical execution was top-tier. Quick iterations, strong communication, and clean results."
+        },
+        {
+          "type": "text",
+          "name": "Arit Ennerath",
+          "title": "Founder, Fview | Softaile 23",
+          "quote": "A genuinely flexible and professional team. They handled every custom request with confidence and creativity."
+        },
+        {
+          "type": "text",
+          "name": "Extra Reviewer 1",
+          "title": "CEO, NextGen Corp",
+          "quote": "This review will only appear on the dedicated /testimonial page, and it's quite long to test wrapping."
+        }
+      ]
     }
   }
 }

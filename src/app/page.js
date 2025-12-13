@@ -77,7 +77,7 @@ export default function Page() {
                             <Footer />
                         </div>
 
-                        <Chatbot />
+                        {/* <Chatbot /> */}
                     </div>
                 </>
             )}

@@ -10,77 +10,54 @@ export default function ProjectsPage() {
   // Sample project data
   const allProjects = [
     {
-      name: "AI Chatbot Platform",
+      name: "Ai Connect",
       description:
-        "A platform that allows businesses to integrate intelligent chatbots for customer service.",
-      image: "/images/ai-chatbot.png", // Add your image in public/images
+        "AIConnect is a fast, all-in-one AI platform featuring multi-model AI Chat, a one-click App Builder for websites, an ATS-optimized Resume Builder, and a creative Image Generator. It is designed for security and scalability, offering comprehensive documentation to maximize user productivity and creativity across diverse tasks.",
+      image: "/aiconnect.png", // Add your image in public/images
       features: [
-        "Multi-lingual support",
-        "RAG-based knowledge retrieval",
-        "Custom AI agent workflows",
-        "Analytics dashboard",
+        "Multi-Agent support",
+        "Editing Tools",
+        "Automate App Creation",
+        "App Building Tool Integrated",
       ],
     },
     {
-      name: "E-commerce Web App",
+      name: "SCSIT Last Miniute",
       description:
-        "A scalable online store platform with advanced features and seamless UX.",
-      image: "/images/ecommerce.png",
+        "LastMinute SCSIT is the comprehensive academic partner for SCSIT, Indore students. It centralizes previous year question papers and study resources for MCA and other programs. Key features include academic tools like CGPA/SGPA calculators and a file upload system for community contribution, ensuring students are organized and prepared for their exams.",
+      image: "/last.png",
       features: [
         "Next.js + Tailwind CSS frontend",
         "Node.js & Express backend",
-        "Stripe payment integration",
-        "Inventory & order management",
+        "College Student Funded",
+        "Documentation Support For Student",
       ],
     },
     {
-      name: "Project Management Tool",
+      name: "Applicant Ace",
       description:
-        "A full-stack project management solution for teams and enterprises.",
-      image: "/images/project-management.png",
+        "ApplicantAce Resume Builder helps users secure jobs at top companies by creating professional, ATS-friendly resumes in minutes. Its four-step process guides users from selecting a template and filling details to tailoring and downloading an error-free document. Features include expert blogs and options to attach cover letters, simplifying the entire job application process.",
+      image: "/aa.png",
       features: [
-        "Kanban & Scrum boards",
-        "AI-powered task suggestions",
-        "Real-time collaboration",
-        "Notifications & reminders",
+        "Ai CV Creation",
+        "Drive Upload",
+        "Integrated Paraphrasing Tool",
+        "Resume Templates",
       ],
     },
-    {
-      name: "Social Media Analytics",
+        {
+      name: "Social X",
       description:
-        "Tool to analyze social media trends, engagement, and audience growth.",
-      image: "/images/social-media.png",
+        "SocialX is a powerful automation platform to schedule up to 500 posts across Twitter, Reddit, and LinkedIn. It ensures real-time publishing with a cron-based system and secure OAuth 2.0 authentication. Key features include bulk scheduling, precise timing control, and a visual calendar view to manage your entire social media presence effectively.",
+      image: "/socialx.png",
       features: [
-        "Analytics dashboard",
-        "Data visualization",
-        "Integration with multiple platforms",
-        "Custom reports",
+        "Automation Tool Integration",
+        "Multi App Support",
+        "Post Scheduling",
+        "Efficient Pipelining",
       ],
     },
-    {
-      name: "Fitness Tracking App",
-      description:
-        "Mobile app to track fitness, workouts, and health data.",
-      image: "/images/fitness.png",
-      features: [
-        "Activity tracking",
-        "Diet and nutrition logging",
-        "Workout plans",
-        "Push notifications",
-      ],
-    },
-    {
-      name: "Online Learning Platform",
-      description:
-        "Platform for interactive courses, quizzes, and progress tracking.",
-      image: "/images/learning.png",
-      features: [
-        "Video courses",
-        "Progress tracking",
-        "Quizzes & certificates",
-        "Discussion forums",
-      ],
-    },
+
   ];
 
   const [visibleCount, setVisibleCount] = useState(3); // show 3 projects initially
@@ -116,7 +93,7 @@ export default function ProjectsPage() {
                 <img
                   src={project.image}
                   alt={project.name}
-                  className="w-full h-48 object-cover rounded-lg mb-4"
+                  className="w-full h-48 object-contain rounded-lg mb-4"
                 />
               )}
               <h2 className="text-2xl font-bold text-black mb-2">{project.name}</h2>

@@ -12,7 +12,7 @@ import remarkGfm from "remark-gfm";
 // ----------------------
 
 // --- CONSTANTS ---
-const ASHMEET_CHAT_API_URL = `https://chat-with-me-seven-sandy.vercel.app/api/chat`;
+const ASHMEET_CHAT_API_URL = `https://tq-assist.vercel.app/api/chat`;
 const ASHMEET_ASSISTANT_IMAGE_URL = "/avatar.png";
 const ASHMEET_USER_IMAGE_URL = "https://placehold.co/40x40/60a5fa/ffffff?text=U";
 const ASHMEET_ASSISTANT_NAME = "TQ assistant";

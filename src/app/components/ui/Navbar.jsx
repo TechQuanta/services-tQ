@@ -1,16 +1,26 @@
-// Navbar.jsx (CLEANED - Now uses central IntroChatDrawer control)
+// src/components/Navbar.jsx
 
 "use client";
 import { useMemo, useContext } from "react";
 import { Menu, X } from 'lucide-react'; 
 import MenuSidebar from "@/components/ui/MenuSidebar";
 import { ValuesContext } from "@/context/ValuesContext";
+import Link from "next/link";
 
-// 🚨 REMOVED: All Cal.com related imports, state, useEffect, and constants
-// The logic is now handled entirely by the parent IntroChatDrawer component.
+// 1. IMPORT THE CENTRAL CONFIG DATA
+import configData from "@/lib/data.json"; // Adjust path as needed
+
+/* ----------------------------------------------------
+ * EXTRACT DATA FROM JSON
+ * ---------------------------------------------------- */
+const { 
+    navLinks, 
+    desktopDrawerWidth, 
+    meetingSlugs // Note: Already passed as MEETING_SLUGS prop, but good to have config here
+} = configData.components.navbar; // New path in JSON
 
 // The Navbar now accepts the control functions as props from the parent (AppWrapper)
-export default function Navbar({ openChat, MEETING_SLUGS }) {
+export default function Navbar({ openChat, MEETING_SLUGS, isChatOpen }) {
     
     // ValuesContext still handles the Mobile Nav Sidebar (Right Drawer)
     const { openSidebar, setOpenSidebar } = useContext(ValuesContext);
@@ -27,48 +37,31 @@ export default function Navbar({ openChat, MEETING_SLUGS }) {
         }
     };
     
-    // Define Navigation Links (Centralized Data - UNCHANGED)
-    const navLinks = useMemo(() => [
-        { name: "Our Work", href: "/work" },
-        { name: "Testimonials", href: "/testimonial" },
-        { name: "Pricing", href: '#Pricing' },
-        { name: "Blog", href: "/blog" }, 
-    ], []);
-
     // --- DESKTOP RENDERERS ---
     const DesktopLink = ({ name, href }) => (
-        <a 
+        <Link 
             href={href} 
             className="relative text-gray-700 hover:text-black transition-colors duration-300 group font-medium"
         >
             {name}
             {/* Animated Underline Effect */}
             <span className="absolute bottom-[-5px] left-0 w-full h-[2px] bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-        </a>
+        </Link>
     );
 
     // --- MOBILE RENDERERS ---
     const MobileLink = ({ name, href, onClick }) => (
-        <a 
+        <Link 
             href={href} 
             onClick={onClick}
             className="block py-3 text-gray-800 hover:bg-gray-100/70 rounded-md px-3 transition-colors duration-200"
         >
             {name}
-        </a>
+        </Link>
     );
 
-    // 🚨 We need to know the state of the central drawer to handle content shifting.
-    // Since we removed the local `isChatOpen` state, the parent wrapper (AppWrapper) 
-    // must provide the `isChatOpen` state to the Navbar as a prop.
-    // Assuming the parent wrapper looks like this:
-    // <IntroChatDrawer>{({ openChat, isChatOpen }) => <Navbar isChatOpen={isChatOpen} ... />}</IntroChatDrawer>
-    
-    // Since you didn't provide the `isChatOpen` prop here, I will proceed assuming 
-    // it's passed down, and use a placeholder to avoid breaking the logic.
-    // For this example to function: **You must ensure `isChatOpen` is passed as a prop.**
-    const isChatOpen = false; // 🚨 TEMPORARY PLACEHOLDER: Must be passed from parent!
-    const DESKTOP_DRAWER_WIDTH = 384; // Keep constant for shifting calculation if not passed
+    // Using the imported JSON config for the width and the passed prop for state
+    const DESKTOP_DRAWER_WIDTH = desktopDrawerWidth; 
 
     return (
         <>
@@ -78,6 +71,7 @@ export default function Navbar({ openChat, MEETING_SLUGS }) {
                 // 🚨 SHIFTING NAVBAR LOGIC 🚨
                 // This logic is now dependent on the isChatOpen prop from the parent
                 style={{
+                    // IMPORTANT: Assuming isChatOpen is correctly passed as a prop now
                     transform: isChatOpen ? `translateX(${DESKTOP_DRAWER_WIDTH}px)` : 'translateX(0)',
                     width: isChatOpen ? `calc(100% - ${DESKTOP_DRAWER_WIDTH}px)` : '100%',
                 }}
@@ -86,17 +80,17 @@ export default function Navbar({ openChat, MEETING_SLUGS }) {
                     
                     {/* LOGO */}
                     <div className="text-2xl font-bold text-gray-900 tracking-wider pl-10">
-                        <img src="/tech.png" alt="Logo" className="h-10 w-auto rounded-md" />
+                        <Link href="/" ><img src="/tech.png" alt="Logo" className="h-10 w-auto rounded-md" /></Link>
                     </div>
 
-                    {/* DESKTOP LINKS */}
+                    {/* DESKTOP LINKS (DATA FROM JSON) */}
                     <div className="hidden md:flex items-center gap-8 lg:gap-10 text-gray-700 text-base">
                         
                         {navLinks.filter(link => link.name !== "Blog").map((link) => (
                             <DesktopLink key={link.name} {...link} />
                         ))}
 
-                        {/* CTA Button - NOW USES THE CENTRALIZED openChat PROP */}
+                        {/* CTA Button - USES CENTRALIZED openChat PROP */}
                         <button
                             onClick={handleOpenChat} 
                             className="px-6 py-2 bg-black text-white rounded-full flex items-center gap-2 hover:bg-gray-800 hover:scale-[1.02] transition-all duration-300 text-sm font-semibold shadow-md"
@@ -112,7 +106,6 @@ export default function Navbar({ openChat, MEETING_SLUGS }) {
                         onClick={() => setOpenSidebar(!openSidebar)}
                         aria-label="Open menu"
                     >
-                        {/* Assuming MenuSidebar is the component that houses the mobile menu icon/logic */}
                         <div className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
                             <MenuSidebar /> 
                         </div>
@@ -120,14 +113,8 @@ export default function Navbar({ openChat, MEETING_SLUGS }) {
                 </div>
             </nav>
             
-            {/* 🚨 REMOVED: All code for the Left Sidebar (Intro Chat Drawer) 🚨
-                The entire drawer structure (overlay, content, iframe, etc.) 
-                is now permanently located in the parent component (meet.jsx) 
-                and does not belong here.
-            */}
-            
             {/* ======================================================================== */}
-            {/* RIGHT SIDEBAR (MOBILE NAVIGATION MENU) - UNCHANGED LOGIC */}
+            {/* RIGHT SIDEBAR (MOBILE NAVIGATION MENU) - DATA FROM JSON */}
             {/* ======================================================================== */}
             
             {openSidebar && (
@@ -165,7 +152,7 @@ export default function Navbar({ openChat, MEETING_SLUGS }) {
                                 ))}
                             </div>
                             
-                            {/* Mobile CTA Button - NOW USES THE CENTRALIZED openChat PROP */}
+                            {/* Mobile CTA Button - USES CENTRALIZED openChat PROP */}
                             <div className="pt-8 border-t border-gray-100 mt-auto">
                                 <button
                                     // Close the mobile menu (setOpenSidebar(false)) and then open the chat drawer (handleOpenChat)
@@ -183,9 +170,6 @@ export default function Navbar({ openChat, MEETING_SLUGS }) {
                     </div>
                 </div>
             )}
-            
-            {/* 🚨 REMOVED: Global CSS for content shifting. This belongs in meet.jsx or the AppWrapper 🚨 */}
-            {/* Since the logic for isChatOpen is now external, the CSS must follow the state. */}
         </>
     );
 }

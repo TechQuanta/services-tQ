@@ -1,0 +1,17 @@
+# === USER-AGENT: Global Rules ===
+# Apply rules to all search engine crawlers (Googlebot, Bingbot, etc.).
+User-agent: *
+
+# === DISALLOW: Nothing Blocked ===
+# We want search engines to crawl all public content, including:
+# / (Homepage)
+# /testimonials
+# /faqs
+# /work
+# (The #pricing anchor tag on the homepage is automatically crawled with the homepage)
+# We can explicitly Disallow known low-value paths if they exist (e.g., hidden admin paths).
+# Assuming you have no hidden admin paths, we keep this section minimal.
+
+# === SITEMAP: Essential for SEO ===
+# This line tells all crawlers the exact location of your XML sitemap, which is crucial for discovering all your important pages.
+Sitemap: https://services.techquanta.tech/sitemap.xml
